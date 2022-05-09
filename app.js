@@ -12,7 +12,7 @@ app.use(express.static('public'));
 // use url-encoded middleware
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
+app.get('https://cashflow-app1.herokuapp.com/', (req, res) => {
   res.render('index', {
     layout: 'main-layout',
     title: 'budget planner app',
