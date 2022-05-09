@@ -1,7 +1,7 @@
 const express = require('express')
 var expressLayouts = require('express-ejs-layouts')
 const app = express()
-const port = process.env.port||'8080'
+const PORT = process.env.PORT || 3000
 
 // use ejs as view engine
 app.set('view engine', 'ejs');
@@ -24,6 +24,6 @@ app.use('/', (req, res) => {
   .send('<h1>Page not found</h1>');
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`)
 })
