@@ -156,7 +156,7 @@ function second(){
 	sectionB.forEach((e)=>{
 		e.innerHTML='';
 	});
-	sectionC.innerHTML='';
+	// sectionC.innerHTML='';
 
 	let filterTagihanPerMonth=[];
 	function b1p(jenisData){
@@ -213,6 +213,12 @@ function second(){
 	});
 
 		
+	addData.addEventListener('click',function(){
+		sectionC.classList.toggle('show');
+	});
+	btnCancel.addEventListener('click',(e)=>{
+		sectionC.classList.remove('show');
+	});
 	// sort filterPerMonth array from end index to start index
 	// filterPerMonth.reverse();
 	// // get month data from filterPerMonth

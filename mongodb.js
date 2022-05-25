@@ -9,28 +9,51 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true
 });
 
+// function mongo(action, data) {
+//   client.connect((err,client) => {
+//     if (err) {
+//       return console.log("Connection Error:");
+//     };
+//     const db = client.db(dbName);
+
+//     if(action=='create'){
+//       // create one
+//       db.collection("users").insertOne(
+//         data, 
+//         (err, result) => {
+//           if (err) {
+//             return console.log("Unable to insert user");
+//           }
+//           console.log(result)
+//         }
+//       );
+//     }else if(action=='read'){
+//       // read all
+//       let abc;
+//       db.collection("users").find().toArray(
+//         (err, result) => { 
+//           abc=result
+//         }
+//       );
+//       console.log(abc);;
+//     }
+//   })
+// }
+
+
+// mongo('read')
+
+// module.exports = { mongo }
 client.connect((err,client) => {
   if (err) {
     return console.log("Connection Error:");
-  }
-
-  // console.log("Connected successfully to server");
+  };
   const db = client.db(dbName);
   
-  db.collection("users").insertOne(
-    {
-      nama: 'erika',
-      email:'erikaaaa@gmail.com'
-    }, 
-    (err, result) => {
-      if (err) {
-        return console.log("Unable to insert user");
+    // read all
+    db.collection("users").find().toArray(
+      (err, result) => {
+        return result
       }
-      // console.log(JSON.stringify(result.ops, undefined, 2));
-      console.log(result);
-    }
-  );  
-})
-
-
-  
+    )
+});

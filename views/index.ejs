@@ -70,10 +70,10 @@
 		
 		<div class="sectionC">
 			<div class="wrapC">
-				<form action="" method="get">
+				<form action="/form" method="post">
 					<div class="form-group">
 						<label for="pembayaran"></label>
-						<select class="form-control" id="pembayaran">
+						<select class="form-control" name="pembayaran" id="pembayaran">
 							<option value="cimb">cimb</option>
 							<option value="mega">mega</option>
 							<option value="gopayLatter">gopayLatter</option>
@@ -82,14 +82,14 @@
 							<option value="debit">debit</option>
 						</select>
 					</div>
-					<input type="date" id="tanggal">
+					<input type="date" id="tanggal" name="tanggal">
 					<!-- <label for="harga">Harga</label> -->
-					<input type="number" id="harga" name="harga" placeholder=" Harga">
+					<input type="number" id="harga" name="harga" placeholder=" Harga" required>
 					<!-- <label for="deskripsi">deskripsi</label> -->
 					<input type="text" id="deskripsi" name="deskripsi" placeholder=" Deskripsi">
 					<!-- <label for="dateAngsuran">tanggal mulai angsuran</label>
 					<input type="date" id="dateAngsuran"> -->
-					<input type="number" id="lamaAngsuran" placeholder="tenor(bulan)" min="2" max="36">
+					<input type="number" id="lamaAngsuran" name="tenor" placeholder="tenor(bulan)" min="2" max="36">
 					<div class="wrapC2">
 						<input class="cancel" id="C2cancel" type="submit" value="cancel"></input>
 						<input class="submit" type="submit" value="Submit">
