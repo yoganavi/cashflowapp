@@ -40,7 +40,10 @@
       <li><a href="collapsible.html">Javascript</a></li>
       <li><a href="mobile.html">Mobile</a></li>
     </ul>
-    
+    <% data.forEach(e => { %>
+     <h3><%= e.deskripsi %> </h3>
+    <% }) %>
+
     <%- body %> 
 
 
