@@ -1,8 +1,9 @@
 const express = require('express')
-var expressLayouts = require('express-ejs-layouts')
+var expressLayouts = require('express-ejs-layouts');
+const { mongo } = require('mongoose');
 const app = express()
 // const Data = require('./mongoose.js')
-const {mongo} = require('./mongodb.js');
+const {mongodb, mongoread, today, datafilterthismonth} = require('./public/js/mongodb.js');
 const PORT = process.env.PORT || 3000
 
 // use ejs as view engine
@@ -15,15 +16,13 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', async (req, res) => {
-  // mongo('read').then(result=>{
-  //   res.send(result)
-  // })
-  let data = await mongo('read')
+  let data = await datafilterthismonth('read')
   // let data = await Data.find()
-  // console.log(data);
-  res.render('index', {
-    layout: 'main-layout',
+  console.log(data);
+  res.render('index2', {
+    layout: 'main-layout2',
     title: 'budget planner app',
+    today: today(1),
     data,
   });
 });
@@ -35,11 +34,15 @@ app.post('/form', (req, res) => {
   // res.send('success');
 });
 
+app.post('/cobaya', (req, res) => {
+  console.log(req.body); 
+  // res.redirect('/');
+});
+
 app.use('/', (req, res) => {
   res.status(404)
   .send('<h1>Page not found</h1>');
 })
-
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)

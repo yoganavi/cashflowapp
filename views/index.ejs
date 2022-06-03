@@ -1,145 +1,126 @@
-    <div class="wrapA">
-		<p></p>
-		<div class="monthcontainer">
-			<a class="waves-effect waves-teal" onclick="monthchanger(-1)">
-				<i class="material-icons">
-					keyboard_double_arrow_left
-				</i>
-			</a>
-			<form method="post" action="/inputdate">
-				<input type="month" name="tanggal" id="month"> 
-				<!-- <button class="btn" type="submit">submit</button> -->
+
+<div class="wrapA">
+	<p></p>
+	<input type="month" name="" id="month">
+	<!-- <input type="date" name="" id="month"> -->
+	<!-- <input class="coba" type="submit" value="submit2">  -->
+	<p></p>
+	</div>
+	<div class="sectionB">
+		<!-- <div class="wrapB1">
+			<p>kartu kredit</p>
+			<p>Rp. 150.000</p>
+			<p>deskripsi belanjaan, deskripsi belanjaanadad, deskripsi belanjaan, deskripsi belanjaan</p>
+			<p>11/03/2021</p>
+		</div> -->
+	</div>
+	<p class="judul-angsuran">
+		Angsuran
+	</p>
+	<div class="sectionB angsuran">
+		<!-- <div class="wrapB1">
+			<p>kartu kredit</p>
+			<p>Rp. 150.000</p>
+			<p>deskripsi belanjaan, deskripsi belanjaanadad, deskripsi belanjaan, deskripsi belanjaan</p>
+			<p>11/03/2021</p>
+		</div> -->
+	</div>
+	<div class="wrapB2">
+		<button class="close">X</button>
+		<button class="edit">EDIT</button>
+		<button class="delete">DELETE</button>
+	</div>
+	<div class="b3">
+		<input type="number" id="passcode" placeholder="Passcode">
+		<button class="passcode">DELETE</button>
+	</div>
+
+	<div class="sectionC">
+		<div class="wrapC">
+			<form action="" method="get">
+				<div class="form-group">
+					<label for="pembayaran"></label>
+					<select class="form-control" id="pembayaran">
+						<option value="cimb">cimb</option>
+						<option value="mega">mega</option>
+						<option value="gopayLatter">gopayLatter</option>
+						<option value="sPaylatter">sPaylatter</option>
+						<option value="ovo">ovo</option>
+						<option value="debit">debit</option>
+					</select>
+				</div>
+				<input type="date" id="tanggal">
+				<!-- <label for="harga">Harga</label> -->
+				<input type="number" id="harga" name="harga" placeholder=" Harga">
+				<!-- <label for="deskripsi">deskripsi</label> -->
+				<input type="text" id="deskripsi" name="deskripsi" placeholder=" Deskripsi">
+				<!-- <label for="dateAngsuran">tanggal mulai angsuran</label>
+				<input type="date" id="dateAngsuran"> -->
+				<input type="number" id="lamaAngsuran" placeholder="tenor(bulan)" min="2" max="36">
+				<div class="wrapC2">
+					<input class="cancel" id="C2cancel" type="submit" value="cancel"></input>
+					<input class="submit" type="submit" value="Submit">
+				</div>
 			</form>
-			<a class="waves-effect waves-teal" onclick="monthchanger(1)" >
-				<i class="material-icons">
-					keyboard_double_arrow_right
-				</i>
-			</a>
 		</div>
-		<!-- <input type="date" name="" id="month"> -->
-		<!-- <input class="coba" type="submit" value="submit2">  -->
-		<p></p>
-    </div>
-		<div class="sectionB">
-			<!-- <div class="wrapB1">
-				<p>kartu kredit</p>
-				<p>Rp. 150.000</p>
-				<p>deskripsi belanjaan, deskripsi belanjaanadad, deskripsi belanjaan, deskripsi belanjaan</p>
-				<p>11/03/2021</p>
-			</div> -->
+	</div>
+	<div class="sectionD">
+		<!-- <div class="wrapD1 cimb">
 		</div>
-		<p class="judul-angsuran">
-			Angsuran
-		</p>
-		<div class="sectionB angsuran">
-			<!-- <div class="wrapB1">
-				<p>kartu kredit</p>
-				<p>Rp. 150.000</p>
-				<p>deskripsi belanjaan, deskripsi belanjaanadad, deskripsi belanjaan, deskripsi belanjaan</p>
-				<p>11/03/2021</p>
-			</div> -->
+		<div class="wrapD1 mega">
+
 		</div>
-		<div class="wrapB2">
-			<button class="close">X</button>
-			<button class="edit">EDIT</button>
-			<button class="delete">DELETE</button>
+		<div class="wrapD1 gopaylatter">
+
 		</div>
-		<div class="b3">
-			<input type="number" id="passcode" placeholder="Passcode">
-			<button class="passcode">DELETE</button>
+		<div class="wrapD1 sPaylatter">
+
 		</div>
-		<div class="sectionD">
-			<!-- <div class="wrapD1 cimb">
-			</div>
-			<div class="wrapD1 mega">
+		<div class="wrapD1 ovo">
 
-			</div>
-			<div class="wrapD1 gopaylatter">
-
-			</div>
-			<div class="wrapD1 sPaylatter">
-
-			</div>
-			<div class="wrapD1 ovo">
-
-			</div>
-			<div class="wrapD1 debit">
-				
-			</div> -->
 		</div>
-		
-		<div class="sectionC">
-			<div class="wrapC">
-				<form action="/form" method="post">
-					<div class="form-group">
-						<label for="pembayaran"></label>
-						<select class="form-control" name="pembayaran" id="pembayaran">
-							<option value="cimb">cimb</option>
-							<option value="mega">mega</option>
-							<option value="gopayLatter">gopayLatter</option>
-							<option value="sPaylatter">sPaylatter</option>
-							<option value="ovo">ovo</option>
-							<option value="debit">debit</option>
-						</select>
-					</div>
-					<input type="date" id="tanggal" name="tanggal">
-					<!-- <label for="harga">Harga</label> -->
-					<input type="number" id="harga" name="harga" placeholder=" Harga" required>
-					<!-- <label for="deskripsi">deskripsi</label> -->
-					<input type="text" id="deskripsi" name="deskripsi" placeholder=" Deskripsi">
-					<!-- <label for="dateAngsuran">tanggal mulai angsuran</label>
-					<input type="date" id="dateAngsuran"> -->
-					<input type="number" id="lamaAngsuran" name="tenor" placeholder="tenor(bulan)" min="2" max="36">
-					<div class="wrapC2">
-						<input class="cancel" id="C2cancel" type="submit" value="cancel"></input>
-						<input class="submit" type="submit" value="Submit">
-					</div>
-				</form>
-			</div>
+		<div class="wrapD1 debit">
+			
+		</div> -->
+	</div>
+	
+	
+
+	<div class="sectionE edit">
+		<div class="wrapE edit">
+			<form action="" method="get">
+				<p>EDIT</p>
+				<div class="form-group">
+					<label for="pembayaran"></label>
+					<select class="form-control" id="pembayaranEdit">
+						<option value="cimb">cimb</option>
+						<option value="mega">mega</option>
+						<option value="gopayLatter">gopayLatter</option>
+						<option value="sPaylatter">sPaylatter</option>
+						<option value="ovo">ovo</option>
+						<option value="debit">debit</option>
+					</select>
+				</div>
+				<input type="date" id="tanggalEdit">
+				<!-- <label for="harga">Harga</label> -->
+				<input type="number" id="hargaEdit" name="harga" placeholder=" Harga">
+				<!-- <label for="deskripsi">deskripsi</label> -->
+				<input type="text" id="deskripsiEdit" name="deskripsi" placeholder=" Deskripsi">
+				<!-- <input type="number" id="lamaAngsuranEdit" placeholder="tenor(bulan)" min="2" max="36"> -->
+				<div class="wrapE2 edit">
+					<input class="canceledit" type="button" value="cancel">
+					<input class="saveedit" type="submit" value="Save">
+				</div>
+			</form>
 		</div>
-
-		<div class="sectionE edit">
-			<div class="wrapE edit">
-				<form action="" method="get">
-					<p>EDIT</p>
-					<div class="form-group">
-						<label for="pembayaran"></label>
-						<select class="form-control" id="pembayaranEdit">
-							<option value="cimb">cimb</option>
-							<option value="mega">mega</option>
-							<option value="gopayLatter">gopayLatter</option>
-							<option value="sPaylatter">sPaylatter</option>
-							<option value="ovo">ovo</option>
-							<option value="debit">debit</option>
-						</select>
-					</div>
-					<input type="date" id="tanggalEdit">
-					<!-- <label for="harga">Harga</label> -->
-					<input type="number" id="hargaEdit" name="harga" placeholder=" Harga">
-					<!-- <label for="deskripsi">deskripsi</label> -->
-					<input type="text" id="deskripsiEdit" name="deskripsi" placeholder=" Deskripsi">
-					<!-- <input type="number" id="lamaAngsuranEdit" placeholder="tenor(bulan)" min="2" max="36"> -->
-					<div class="wrapE2 edit">
-						<input class="canceledit" type="button" value="cancel">
-						<input class="saveedit" type="submit" value="Save">
-					</div>
-				</form>
-			</div>
+	</div>
+	<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/C0mPB-lyI1I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+	
+	<!-- <div id="loadingPage">
+		<h2>L O A D I N G</h2>
+		<div class="banner">
+			<div class="blocks"></div>
 		</div>
+	</div> -->
 
-
-		<button class="addData"><i class="fas fa-cart-plus"></i></button>
-
-		<!-- Modal Trigger -->
-		<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-
-		<!-- Modal Structure -->
-		<div id="modal1" class="modal">
-			<div class="modal-content">
-				<h4>Modal Header</h4>
-				<p>A bunch of text</p>
-			</div>
-			<div class="modal-footer">
-				<a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-			</div>
-		</div>
+	<button class="addData"><i class="fas fa-cart-plus"></i></button>

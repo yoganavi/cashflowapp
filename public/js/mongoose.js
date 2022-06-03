@@ -27,15 +27,21 @@ const Data = mongoose.model('Data', {
 });
 
 const data = new Data({
-  pembayaran: "gopay",
-  tanggal: "2020-06-05",
-  harga: "30000",
-  deskripsi: "belanja",
+  pembayaran: "mega",
+  tanggal: "2022-06-03",
+  harga: "75000",
+  deskripsi: "makan",
 });
 
 module.exports = Data;
 
-data.save()
+
+async function urut(){
+  await data.save()
+  Data.find().then(data=>console.log(data))  
+}
+urut()
+// console.log(Data.find().then(data=>console.log(data)));
 
 
 

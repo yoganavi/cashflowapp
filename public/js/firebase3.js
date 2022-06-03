@@ -1,11 +1,3 @@
-// materialize init
-document.addEventListener('DOMContentLoaded', function() {
-	var elems = document.querySelectorAll('.modal'),
-	elems2 = document.querySelectorAll('.sidenav');
-	var instances = M.Modal.init(elems, {});
-	var instances = M.Sidenav.init(elems2, {});
-});
-
 let todoRef = database.ref('data1');
 let month=document.querySelector('#month');
 let btn1 = document.querySelector('input.submit');
@@ -36,17 +28,16 @@ let changeDateFormat=(i)=>{
 	let mm4=mm2[2]+'-'+(String(mm2[1]-1)).padStart(2,'0');
 	if(i=='start'){
 		return mm4;
-	}else{
+	}else if(i=='end'){
 		return mm3.slice(0,7);
+	}else{
+		return mm3;
 	};
 };
 
-let month3a=changeDateFormat('start')+'-20';
-let month3=changeDateFormat('end')+'-19';
-// tanggal.value=year+'-'+month2+'-'+today;
-console.log(month3a);
-console.log(month3);
-
+let month3a=changeDateFormat('start')+'-19';
+let month3=changeDateFormat('end')+'-20';
+tanggal.value=changeDateFormat('addbutton');
 
 // maksimal date on this month
 let maxDate4;
@@ -58,7 +49,6 @@ function maksimalDateThisMonth(){
 	maxDate.setDate(0);
 	let maxDate2=maxDate.getDate();
 	maxDate4=maxDate.getFullYear()+'-'+String(maxDate.getMonth()+1).padStart(2,'0')+'-'+maxDate2;
-	// console.log(maxDate4);
 };
 maksimalDateThisMonth();
 
@@ -66,31 +56,15 @@ month.addEventListener('input',function(){
 	let mm=month.value;
 	let mm2=mm.split('-');
 	let mm3=mm2[0]+'-'+(String(mm2[1]-1)).padStart(2,'0');
-	month3a=mm3+'-20';
-	month3=mm+'-19';
+	month3a=mm3+'-19';
+	month3=mm+'-20';
 
 	maksimalDateThisMonth();
 	second();
 });
 
-function monthchanger(num){
-	let mm=month.value;
-	let mm2=mm.split('-');
-	let mm3=mm2[0]+'-'+(String(mm2[1]-1+num)).padStart(2,'0');
-	let mm4=mm2[0]+'-'+(String(Number(mm2[1])+num)).padStart(2,'0');
-	month3a=mm3+'-20'; // start date
-	month3=mm4+'-19'; // end date
-	console.log(month3a);
-	console.log(month3);
-
-	month.value=mm4;
-
-	maksimalDateThisMonth();
-	second();
-};
-
 // create to firebase
-let createData = () => {
+let createTodo = () => {
 	let todo = {
 		pembayaran: pembayaran.value,
 		tanggal: tanggal.value,
@@ -105,21 +79,57 @@ let createData = () => {
 // /create to firebase
 
 // read firebase
-let dataOnArray;
+let dataOnArray,
+readAllData;
 function first(){
 	todoRef.on('value',(e)=>{
-		let readAllData= e.val();
-		dataOnArray=Object.values(readAllData);
+		dataOnArray=[];
+		readAllData= e.val();
+		// dataOnArray=Object.values(readAllData);
+		// insert id to dataOnArray
+		// Object.keys(readAllData).forEach((e)=>{
+		// 	dataOnArray.push(readAllData[e]);
+		// 	dataOnArray[dataOnArray.length-1].id=e;
+		// });
+		for(let id in readAllData){
+			// readAllData[id]['id']=id;
+			dataOnArray.push(readAllData[id]);
+			dataOnArray[dataOnArray.length-1].id=id;
+		};
+		console.log(dataOnArray);
 		second();
 	});
 };
 first();
 
 function second(){
+	// let filterPerMonth2=[];
+	// let filterPerMonthAngsuran2=[];
+	
+	// for(let id in readAllData){
+	// 	if(readAllData[id].tanggal < month3 && readAllData[id].tanggal > month3a && readAllData[id].pembayaran!='gopayLatter'){
+		// 		if(readAllData[id].tipe!=undefined){
+			// 			let data={
+				// 				deskripsi:readAllData[id].deskripsi,
+				// 				harga:readAllData[id].harga,
+				// 				pembayaran:readAllData[id].pembayaran,
+				// 				tanggal:readAllData[id].tanggal,
+				// 				tipe:readAllData[id].tipe,
+				// 				id
+				// 			};
+				// 			filterPerMonthAngsuran2.push(data);
+				// 		}else	if(readAllData[id].tipe==undefined){
+					// 			filterPerMonth2.push(readAllData[id]);
+					// 		};
+					// 	};
+					// };
+					// console.log(filterPerMonth2);
+					// console.log(filterPerMonthAngsuran2);
+					
 	let filterPerMonthAngsuran=[];
 	let filterPerMonth=[];
 	filterPerMonth=dataOnArray.filter(e=> {
-		if(e.tanggal <= month3 && e.tanggal >= month3a && e.pembayaran!='gopayLatter'){
+		if(e.tanggal < month3 && e.tanggal > month3a && e.pembayaran!='gopayLatter'){
 			if(e.tipe!=undefined){
 				filterPerMonthAngsuran.push(e);
 			}else	if(e.tipe==undefined){
@@ -156,7 +166,6 @@ function second(){
 	sectionB.forEach((e)=>{
 		e.innerHTML='';
 	});
-	// sectionC.innerHTML='';
 
 	let filterTagihanPerMonth=[];
 	function b1p(jenisData){
@@ -168,6 +177,7 @@ function second(){
 		data.forEach(e=>{
 			b1 = document.createElement('div');
 			b1.setAttribute('class','b1');
+			b1.setAttribute('id',e.id);
 			section.append(b1);
 			
 			b1p(e.pembayaran);
@@ -213,12 +223,6 @@ function second(){
 	});
 
 		
-	addData.addEventListener('click',function(){
-		sectionC.classList.toggle('show');
-	});
-	btnCancel.addEventListener('click',(e)=>{
-		sectionC.classList.remove('show');
-	});
 	// sort filterPerMonth array from end index to start index
 	// filterPerMonth.reverse();
 	// // get month data from filterPerMonth
@@ -233,4 +237,188 @@ function second(){
 	// // sort monthData2 from small to big
 	// monthData2.sort((a,b)=>a-b);
 	// console.log(monthData2);
+	hapusData();
 };
+
+// Delete function
+let wrapB2=document.querySelector('.wrapB2');
+let wrapB2Button=document.querySelectorAll('.wrapB2 Button');
+let idb1=0;
+let idb1Tipe;
+// let b2=document.getElementsByClassName('b1');
+// console.log(b2);
+// let b1;
+let i2;
+function hapusData(){
+	b1=document.querySelectorAll('.b1');
+	// console.log(b1);
+	b1.forEach((e)=>{
+		e.addEventListener('click',()=>{
+			// idb1Tipe=readAllData[e.id].tipe;
+			idb1Tipe=dataOnArray.find(el=>el.id==e.id).tipe;
+			idb1=e.id;
+			console.log(e);
+			console.log(i2);
+			if(i2=='r'){
+				b1.forEach(e1=>e1.classList.remove('klik'))
+				i2='a';
+			}else{
+				e.classList.add('klik');
+				i2='r';
+			};
+			wrapB2.classList.toggle('show');
+		});
+	});
+};
+
+wrapB2Button[0].addEventListener('click',()=>{
+	wrapB2.classList.remove('show');
+	b1.forEach(e1=>e1.classList.remove('klik'));
+	i2='a';
+});
+
+let b3=document.querySelector('.b3');
+let b3button=document.querySelector('.b3 button');
+let b3input=document.querySelector('#passcode');
+wrapB2Button[2].addEventListener('click',()=>{
+	b3input.value='';
+	console.log(idb1Tipe);
+	console.log(idb1);
+	b3.classList.add('show');
+	return console.log('kilk tombol delete');
+});
+
+b3button.addEventListener('click',()=>{
+	console.log(b3input.value);
+	console.log(idb1Tipe);
+	console.log(idb1);
+	b3.classList.remove('show');
+	if(b3input.value=='153'){
+		hapusData2()
+	}else{
+		alert('wrong passcode')
+	};
+});
+
+function hapusData2(){
+	console.log(idb1Tipe);
+	console.log(idb1);
+	console.log(b3input.value);
+	if(idb1Tipe==undefined){
+		alert('DELETED!  ' + ' Rp. '+readAllData[idb1].harga+' ==> '+readAllData[idb1].deskripsi);
+		todoRef.child(idb1).remove();
+		wrapB2.classList.remove('show');
+		// first();
+		console.log('ccc');
+	}else{
+		alert('DELETED!  ' + ' Rp. '+readAllData[idb1].harga+' ==> '+readAllData[idb1].deskripsi+' '+idb1Tipe);
+
+		for(let id in readAllData){
+			if(readAllData[id].tipe==idb1Tipe){
+				todoRef.child(id).remove();
+				wrapB2.classList.remove('show');
+			};
+		};
+	};
+};
+// /Delete function
+
+// Edit section
+let sectionE=document.querySelector('.sectionE');
+let wrapE2button=document.querySelectorAll('.wrapE2 input');
+let editPembayaran=document.querySelector('#pembayaranEdit');
+let editTanggal=document.querySelector('#tanggalEdit');
+let editHarga=document.querySelector('#hargaEdit');
+let editDeskripsi=document.querySelector('#deskripsiEdit');
+
+// tombol edit
+let idforeditangsuran=0;
+wrapB2Button[1].addEventListener('click',()=>{
+	if(idb1Tipe==undefined){
+		sectionE.classList.add('show');
+		editPembayaran.value=readAllData[idb1].pembayaran;
+		editTanggal.value=readAllData[idb1].tanggal;
+		editHarga.value=readAllData[idb1].harga;
+		editDeskripsi.value=readAllData[idb1].deskripsi;
+	}else{
+		sectionC.classList.add('show');
+		pembayaran.value=readAllData[idb1].pembayaran;
+		tanggal.value=readAllData[idb1].tanggal;
+		harga.value=readAllData[idb1].harga;
+		deskripsi.value=readAllData[idb1].deskripsi;
+		lamaAngsuran.value=readAllData[idb1].tenor;
+		idforeditangsuran=1;
+	};
+});
+
+// tombol cancel
+wrapE2button[0].addEventListener('click',()=>{
+	sectionE.classList.remove('show');
+});
+
+// tombol save
+wrapE2button[1].addEventListener('click',()=>{
+	sectionE.classList.remove('show');
+	todoRef.child(idb1).update({
+		pembayaran: editPembayaran.value,
+		tanggal: editTanggal.value,
+		harga: editHarga.value,
+		deskripsi: editDeskripsi.value,
+	});
+});
+// /Edit section
+
+// addData on off
+addData.addEventListener('click',function(){
+	sectionC.classList.toggle('show');
+});
+btnCancel.addEventListener('click',(e)=>{
+	sectionC.classList.remove('show');
+	idforeditangsuran=0;
+	e.preventDefault()
+});
+// / addData on off
+
+// angsuran
+let lamaAngsuran=document.querySelector('#lamaAngsuran');
+
+let createAngsuran = () =>{
+	console.log('start')
+	let month=new Date(tanggal.value).getMonth();
+	let date=new Date(tanggal.value).getDate();
+	let year=new Date(tanggal.value).getFullYear();
+	let random=Math.floor((Math.random() * 10000000));
+
+	for(let i=1; i <= lamaAngsuran.value; i++){
+		let todo2 = {
+			tipe: 'angsuran'+random,
+			pembayaran: pembayaran.value,
+			tanggal: year+'-'+(String(month+=1)).padStart(2,'0')+'-'+String(date).padStart(2,'0'),
+			harga: harga.value,
+			deskripsi: deskripsi.value +' (angsuran ke '+ i +' / '+lamaAngsuran.value+')',
+			tenor: lamaAngsuran.value
+		};
+		console.log(todo2);
+		if(month==12){
+			month=0;
+			year+=1;	
+		}
+		
+		todoRef.push(todo2);
+	};
+	sectionC.classList.remove('show');
+	console.log('ok2')
+};
+btn1.addEventListener('click',(e)=>{
+	if(lamaAngsuran.value==0){
+		createTodo();
+	}else if(lamaAngsuran.value>1 && idforeditangsuran==0){
+		createAngsuran()
+	}else if(lamaAngsuran.value>1 && idforeditangsuran==1){
+		console.log(idforeditangsuran);
+		hapusData2();
+		createAngsuran();
+	};
+	e.preventDefault();
+})
+// / angsuran
