@@ -3,7 +3,7 @@ var expressLayouts = require('express-ejs-layouts');
 const { mongo } = require('mongoose');
 const app = express()
 // const Data = require('./mongoose.js')
-const {mongodb, mongoread, today, datafilterthismonth} = require('./public/js/mongodb.js');
+const {today, datafilterthismonth, filtercolor, mongodb} = require('./public/js/mongodb.js');
 const PORT = process.env.PORT || 3000
 
 // use ejs as view engine
@@ -18,25 +18,25 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', async (req, res) => {
   let data = await datafilterthismonth('read')
   // let data = await Data.find()
-  console.log(data);
+  // console.log(data);
   res.render('index2', {
     layout: 'main-layout2',
     title: 'budget planner app',
-    today: today(1),
+    month: today(1),
+    fulldate: today(1,'fulldate'),
     data,
+    color: filtercolor,
   });
 });
 
-// get data from form
-app.post('/form', (req, res) => {
-  mongo('create',req.body);
-  res.redirect('/');
-  // res.send('success');
+// add data to db
+app.post('/send', (req, res) => {
+  mongodb('create',req.body).then(res.redirect('/'));
 });
 
-app.post('/cobaya', (req, res) => {
-  console.log(req.body); 
-  // res.redirect('/');
+// detele one
+app.get('/delete/:id', (req, res) => {
+  mongodb('delete', req.params.id).then(res.redirect('/')) 
 });
 
 app.use('/', (req, res) => {

@@ -1,0 +1,40 @@
+form.seca{
+  display: flex;
+  justify-content: center;
+}
+form.seca input{
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 10px;
+  box-shadow: unset;
+  border: 1px solid black;
+}
+.secb ul li i{
+  text-transform: capitalize;
+}
+.secb ul li span.title{
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.secb ul li p:nth-of-type(1){
+  font-size: large;
+}
+.secb .collection li p:nth-of-type(3){
+  font-weight: bold;
+
+}
+.collapsible-header ul{
+  width: 100%;
+}
+.sece.modal{
+  background: rgba(255, 255, 255, 0) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.sece.modal .container{
+  display: flex;
+  justify-content: center;
+  gap: 5%;
+  align-items: center;
+  /* flex-direction: column; */
+}

@@ -1,0 +1,15 @@
+<ul class="collection">
+  <% data.forEach(e => { %>
+    <li class="collection-item avatar" id=<%= e._id  %> >
+      <i class="circle <%= color(e.pembayaran)[0]  %>"><%= color(e.pembayaran)[1]  %> </i>
+      <span class="title"><%= e.pembayaran %> </span>
+      <p><%= e.harga %></p>
+      <p><%= e.deskripsi %></p>
+      <a class="secondary-content"><%= e.tanggal %></a>
+      <div class="b1">
+        <a class="waves-effect waves-light btn">Edit</a>
+        <a class="waves-effect waves-light btn red">Delete</a>
+      </div>
+    </li>
+  <% }) %>
+</ul>
