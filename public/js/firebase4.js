@@ -8,6 +8,7 @@ editdeletebtn = document.querySelectorAll('[data-secb-button]');
 
 pilihbulan.addEventListener('input', function() {
 	pilihbulan.submit();
+	// window.open("/")
 });
 floatingbtn.forEach(e => {
 	e.addEventListener('click', function() {

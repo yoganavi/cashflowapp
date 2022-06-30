@@ -16,7 +16,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', async (req, res) => {
-  let data = await datafilterthismonth('read')
+  let data = await datafilterthismonth(0)
   // let data = await Data.find()
   // console.log(data);
   res.render('index2', {
@@ -31,7 +31,19 @@ app.get('/', async (req, res) => {
 
 // add data to db
 app.post('/send', (req, res) => {
+  console.log(req.body);
   mongodb('create',req.body).then(res.redirect('/'));
+});
+
+// ganti bulan
+app.post('/gantiBulan', async (req, res) => {
+  let bulan = req.body.bulan.split('');
+  bulan = bulan[5]+bulan[6]
+  console.log(bulan);
+  let data = await datafilterthismonth(bulan)
+  console.log(data);
+
+  // mongodb('create',req.body).then(res.redirect('/'));
 });
 
 // detele one

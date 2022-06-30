@@ -1,6 +1,6 @@
 const { ObjectID } = require('bson');
 const {MongoClient} = require('mongodb');
-const uri = "mongodb+srv://yoga:U17pU4M39j7oPc2M@cluster0.kmlk0.mongodb.net/cashflow?retryWrites=true&w=majority"; 
+const uri = "mongodb+srv://yoga:4TLK76yucf0QA3pQ@cluster0.kmlk0.mongodb.net/cashflow?retryWrites=true&w=majority"; 
 
 // Database Name
 const dbName = "cashflow";
@@ -70,29 +70,35 @@ function mongodb(action,data) {
 
 function today(data,days){
   let today = new Date();
-  let dd = String(today.getDate()).padStart(2, '0');
-  let mm = String(today.getMonth() + data).padStart(2, '0'); //January is 0!
   let yyyy = today.getFullYear();
+  let dd = String(today.getDate()).padStart(2, '0');
+  if(typeof(data)=='string'){
+    if(data.length>2){
+      return `${yyyy}-${data.split('',2).join('')}`
+    }
+    return `${yyyy}-0${data-1}`
+  };
+  let mm = String(today.getMonth() + data).padStart(2, '0'); //January is 0!
   if(days){
     return yyyy + '-' + mm + '-' + dd;
   }
   return yyyy + '-' + mm;
 }
-
 // mongodb('read').then(data=>{
 //   console.log(data)
 // });  
 
 async function datafilterthismonth(data){
   let read = await mongodb('read');
+  
   let filtered = read.filter(e=>{
-    if(e.tanggal > `${today(0)}-20` && e.tanggal < today(1)+'-'+'19' && e.pembayaran!='gopaylatter'){
+    if(e.tanggal > `${today(data)}-20` && e.tanggal < today(data+1)+'-'+'19' && e.pembayaran!='gopaylatter'){
       return e
     } 
   })
   return filtered
 }
-
+datafilterthismonth('04')
 function filtercolor(data){
   if(data=='cimb'){ return ['red',...data[0]]};
   if(data=='mega'){ return ['yellow',...data[0]] };
@@ -105,4 +111,12 @@ module.exports = { today, datafilterthismonth, filtercolor, mongodb }
 let asd = ['cimb','mega']
 
 // let huruf= ...asd
-console.log(filtercolor('gopay'));
+// console.log(filtercolor('gopay'));
+
+// let bulan= today(0).split('');
+// bulan = parseInt(bulan[5]+bulan[6])
+// console.log(bulan);
+// console.log(today(1));
+datafilterthismonth().then((data)=>{
+  // console.log(data);
+}) 

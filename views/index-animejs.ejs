@@ -1,0 +1,35 @@
+
+<div class="begin-complete-demo">
+</div>
+<section>
+  <p class="begin"></p>
+  <p class="progress"></p>
+  <p class="complete"></p>
+</section>
+
+
+<script src="js/anime.min.js"></script>
+<script>
+  let progress=document.querySelector('.progress'),
+  beginLogEl=document.querySelector('.begin'),
+  completeLogEl=document.querySelector('.complete');
+
+  anime({
+      targets: '.begin-complete-demo',
+      translateX: 240,
+      delay: 1000,
+      easing: 'easeInOutCirc',
+      update: function(anim) {
+      progress.innerHTML = 'progress : ' + Math.round(anim.progress) + '%';
+      beginLogEl.innerHTML = 'began : ' + anim.began;
+      completeLogEl.innerHTML = 'completed : ' + anim.completed;
+    },
+    begin: function(anim) {
+      beginLogEl.innerHTML = 'began : ' + anim.began;
+    },
+    complete: function(anim) {
+      completeLogEl.innerHTML = 'completed : ' + anim.completed;
+      console.log('object');
+    },
+  });
+</script>
