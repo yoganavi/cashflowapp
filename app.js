@@ -4,6 +4,10 @@ const { mongo } = require('mongoose');
 const app = express()
 // const Data = require('./mongoose.js')
 const {today, datafilterthismonth, filtercolor, mongodb} = require('./public/js/mongodb.js');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+
 const PORT = process.env.PORT || 3000
 
 // use ejs as view engine
@@ -14,15 +18,26 @@ app.use(expressLayouts);
 app.use(express.static('public'));
 // use url-encoded middleware
 app.use(express.urlencoded({ extended: true }));
+// konfigurasi flash
+app.use(cookieParser('secret'));
+app.use(
+  session({
+    cookie: { maxAge: 6000},
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(flash());
 
 app.get('/', async (req, res) => {
-  let data = await datafilterthismonth(0)
   // let data = await Data.find()
-  // console.log(data);
+  let bulan=req.flash('msg'); //! output berupa array > string harus di join
+  let data = await datafilterthismonth(bulan.length==0? 0 : bulan.join('')) 
   res.render('index2', {
     layout: 'main-layout2',
     title: 'budget planner app',
-    month: today(1),
+    month: today(bulan.length==0? 1 : bulan.join('')+1),
     fulldate: today(1,'fulldate'),
     data,
     color: filtercolor,
@@ -39,11 +54,11 @@ app.post('/send', (req, res) => {
 app.post('/gantiBulan', async (req, res) => {
   let bulan = req.body.bulan.split('');
   bulan = bulan[5]+bulan[6]
-  console.log(bulan);
-  let data = await datafilterthismonth(bulan)
-  console.log(data);
-
-  // mongodb('create',req.body).then(res.redirect('/'));
+  // console.log(bulan);
+  // let data = await datafilterthismonth(bulan)
+  // console.log(data);
+  req.flash('msg', bulan);
+  res.redirect('/')
 });
 
 // detele one

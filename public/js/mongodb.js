@@ -76,6 +76,9 @@ function today(data,days){
     if(data.length>2){
       return `${yyyy}-${data.split('',2).join('')}`
     }
+    if(data=='01'){
+      return `${yyyy-1}-12`
+    }
     return `${yyyy}-0${data-1}`
   };
   let mm = String(today.getMonth() + data).padStart(2, '0'); //January is 0!
@@ -93,12 +96,21 @@ async function datafilterthismonth(data){
   
   let filtered = read.filter(e=>{
     if(e.tanggal > `${today(data)}-20` && e.tanggal < today(data+1)+'-'+'19' && e.pembayaran!='gopaylatter'){
-      return e
+      // console.log(e.tanggal);
+      return e.tanggal
     } 
   })
+  // console.log(today(data));
+  // console.log(today(data+1));
+
+  // sort data from new to old
+  filtered.sort((a,b)=>{
+		return new Date(b.tanggal) - new Date(a.tanggal)
+	});
   return filtered
 }
-datafilterthismonth('04')
+datafilterthismonth('06')
+
 function filtercolor(data){
   if(data=='cimb'){ return ['red',...data[0]]};
   if(data=='mega'){ return ['yellow',...data[0]] };
@@ -117,6 +129,6 @@ let asd = ['cimb','mega']
 // bulan = parseInt(bulan[5]+bulan[6])
 // console.log(bulan);
 // console.log(today(1));
-datafilterthismonth().then((data)=>{
-  // console.log(data);
-}) 
+// datafilterthismonth().then((data)=>{
+//   console.log(data);
+// }) 
