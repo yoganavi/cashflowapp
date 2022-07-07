@@ -3,7 +3,7 @@
   <!-- <button>submit</button> -->
 </form>
 
-<h3 data-total-belanja class="totalbelanja"> <%= totalThisMonth  %> </h3>
+<h3 data-total-belanja class="totalbelanja"><%= "Rp. "+new Intl.NumberFormat().format(totalThisMonth) %></h3>
 
 <ul data-secb class="secb collapsible popout">
   <% data.forEach(e => { %>
@@ -13,7 +13,7 @@
           <li class="collection-item avatar" >
             <i class="circle <%= color(e.pembayaran)[0]  %>"><%= color(e.pembayaran)[1]  %> </i>
             <span data-secb-value class="title"><%= e.pembayaran %></span>
-            <p data-secb-value><%= e.harga %></p>
+            <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
             <p data-secb-value><%= e.deskripsi %></p>
             <a data-secb-value class="secondary-content"><%= e.tanggal %></a>
           </li>

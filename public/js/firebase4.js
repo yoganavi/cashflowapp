@@ -4,17 +4,13 @@ inputs =	document.querySelectorAll('[data-modal] form input'),
 formselect =	document.querySelector('[data-modal] form select'),
 floatingbtn =	document.querySelectorAll('[data-floatbtn] ul li a'),
 daftardata = document.querySelectorAll('[data-secb]>li'),
-actionbtn = document.querySelectorAll('[data-secb-button]'), // edit & delete button
-totalbelanja = document.querySelector('[data-total-belanja]')
+actionbtn = document.querySelectorAll('[data-secb-button]') // edit & delete button
 
 // pilih bulan
 pilihbulan.addEventListener('input', function() {
 	pilihbulan.submit();
 	// window.open("/")
 });
-
-// text total belanja
-totalbelanja.innerHTML= 'Rp. '+ new Intl.NumberFormat().format(totalbelanja.innerHTML)
 
 // add data section
 floatingbtn.forEach(e => {
