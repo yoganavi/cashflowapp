@@ -10,7 +10,7 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true
 });
 
-function mongodb(action,data) {
+function mongodb(action,data,data2) {
   return new Promise((resolve, reject) => {
     client.connect((err,client) => {
       if (err) {
@@ -44,6 +44,15 @@ function mongodb(action,data) {
             console.log(result)
           }
         );
+      }else if(action=='edit'){
+        db.collection("datas").updateOne(
+          {
+            _id: ObjectID(data)
+          },
+          {
+            $set: data2
+          }
+        )
       }
     })
   })
@@ -93,11 +102,10 @@ function today(data,days){
 
 async function datafilterthismonth(data){
   let read = await mongodb('read');
-  
+
   let filtered = read.filter(e=>{
     if(e.tanggal > `${today(data)}-20` && e.tanggal < today(data+1)+'-'+'19' && e.pembayaran!='gopaylatter'){
-      // console.log(e.tanggal);
-      return e.tanggal
+      return e
     } 
   })
   // console.log(today(data));
@@ -109,7 +117,18 @@ async function datafilterthismonth(data){
 	});
   return filtered
 }
-datafilterthismonth('06')
+
+datafilterthismonth(0)
+
+// total pengeluaran
+function totalPerBulan(data){
+  let jumlah=0;
+  data.forEach(e => {
+    jumlah+=parseInt(e.harga)
+  });
+  return jumlah
+}
+
 
 function filtercolor(data){
   if(data=='cimb'){ return ['red',...data[0]]};
@@ -118,7 +137,8 @@ function filtercolor(data){
 	if(data=='gopay' || data=="gopaylatter"){ return ['green',...data[0]] }
 }
 
-module.exports = { today, datafilterthismonth, filtercolor, mongodb }
+
+module.exports = { today, datafilterthismonth, filtercolor, mongodb, totalPerBulan }
 
 let asd = ['cimb','mega']
 

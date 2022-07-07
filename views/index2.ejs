@@ -1,7 +1,10 @@
-<form method="post" action="/gantiBulan" class="seca" data-bulan>
+<form data-bulan method="post" action="/gantiBulan" class="seca">
   <input name="bulan" type="month" value=<%= month %>  >
   <!-- <button>submit</button> -->
 </form>
+
+<h3 data-total-belanja class="totalbelanja"> <%= totalThisMonth  %> </h3>
+
 <ul data-secb class="secb collapsible popout">
   <% data.forEach(e => { %>
     <li id=<%= e._id %> >
@@ -9,10 +12,10 @@
         <ul class="collection">
           <li class="collection-item avatar" >
             <i class="circle <%= color(e.pembayaran)[0]  %>"><%= color(e.pembayaran)[1]  %> </i>
-            <span class="title"><%= e.pembayaran %> </span>
-            <p><%= e.harga %></p>
-            <p><%= e.deskripsi %></p>
-            <a class="secondary-content"><%= e.tanggal %></a>
+            <span data-secb-value class="title"><%= e.pembayaran %></span>
+            <p data-secb-value><%= e.harga %></p>
+            <p data-secb-value><%= e.deskripsi %></p>
+            <a data-secb-value class="secondary-content"><%= e.tanggal %></a>
           </li>
         </ul>
       </div>
@@ -54,7 +57,7 @@
       <!-- form selet -->
       <div class="input-field col s12">
         <select name="pembayaran">
-          <option value="" disabled selected>payment method</option>
+          <!-- <option value="" disabled selected>payment method</option> -->
           <option value="cimb">cimb</option>
           <option value="mega">mega</option>
           <option value="gopay">gopay</option>

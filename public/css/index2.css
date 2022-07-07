@@ -9,6 +9,10 @@ form.seca input{
   box-shadow: unset;
   border: 1px solid black;
 }
+.totalbelanja{
+  text-align: center;
+  margin: 30px 0 35px 0;
+}
 .secb ul li i{
   text-transform: capitalize;
 }
