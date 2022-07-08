@@ -33,7 +33,10 @@ app.use(flash());
 app.get('/', async (req, res) => {
   // let data = await Data.find()
   let bulan=req.flash('msg'); //! output berupa array > string harus di join
-  let data = await datafilterthismonth(bulan.length==0? 0 : bulan.join('')) 
+  let load=req.flash('msg2'); //! output berupa array > string harus di join
+  // console.log(...load);
+  // console.log(bulan);
+  let data = await datafilterthismonth(bulan.length==0? 0 : bulan.join(''), ...load) 
 
   res.render('index2', {
     layout: 'main-layout2',
@@ -60,6 +63,7 @@ app.post('/gantiBulan', (req, res) => {
   // let data = await datafilterthismonth(bulan)
   // console.log(data);
   req.flash('msg', bulan);
+  req.flash('msg2', '0');
   res.redirect('/')
 });
 

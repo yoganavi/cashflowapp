@@ -40,7 +40,7 @@ function edit(index,datas,id){
 		forminit();
 		inputs[0].value = datas[3].innerHTML // tanggal
 		inputs[1].value = datas[2].innerHTML // deskripsi
-		inputs[2].value = datas[1].innerHTML // harga
+		inputs[2].value = datas[1].innerHTML.slice(4).replace(",", "") // harga
 		forms.action='/edit/'+id;
 		forms.querySelector('button i').innerText='edit' // submit button on modal
 		modalInstance[0].open();

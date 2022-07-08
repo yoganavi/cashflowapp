@@ -96,12 +96,16 @@ function today(data,days){
   }
   return yyyy + '-' + mm;
 }
+
 // mongodb('read').then(data=>{
 //   console.log(data)
 // });  
 
-async function datafilterthismonth(data){
-  let read = await mongodb('read');
+let read;
+async function datafilterthismonth(data,load){
+  if(load!='0'){
+    read = await mongodb('read');
+  }
 
   let filtered = read.filter(e=>{
     if(e.tanggal > `${today(data)}-20` && e.tanggal < today(data+1)+'-'+'19' && e.pembayaran!='gopaylatter'){
@@ -118,7 +122,7 @@ async function datafilterthismonth(data){
   return filtered
 }
 
-datafilterthismonth(0)
+// datafilterthismonth(0)
 
 // total pengeluaran
 function totalPerBulan(data){
