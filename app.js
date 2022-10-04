@@ -3,7 +3,7 @@ var expressLayouts = require('express-ejs-layouts');
 const { mongo } = require('mongoose');
 const app = express()
 // const Data = require('./mongoose.js')
-const {today, datafilterthismonth, filtercolor, mongodb, totalPerBulan} = require('./public/js/mongodb.js');
+const {today, datafilterthismonth, filtercolor, mongodb, totalPerBulan, chosedb} = require('./utils/mongodb.js');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
@@ -30,13 +30,36 @@ app.use(
 );
 app.use(flash());
 
+let login2;
+// login page
+app.get('/login', (req, res)=>{
+  res.render('login',{
+    layout: 'main-login',
+    title: 'Login | Budget Plan',
+  })
+})
+
+app.post('/login', (req, res)=>{
+  console.log(req.body);
+  chosedb(req.body.username);
+  req.flash('login', 1);
+  login2=true;
+  res.redirect('/')
+})
+
 app.get('/', async (req, res) => {
   // let data = await Data.find()
-  let bulan=req.flash('msg'); //! output berupa array > string harus di join
-  let load=req.flash('msg2'); //! output berupa array > string harus di join
-  // console.log(...load);
-  // console.log(bulan);
-  let data = await datafilterthismonth(bulan.length==0? 0 : bulan.join(''), ...load) 
+  let bulan=req.flash('msg'); //! output berupa array 
+  let load=req.flash('msg2'); //! output berupa array
+  let login=req.flash('login'); //! output berupa array
+  console.log(bulan);
+  console.log(login);
+  console.log(login2);
+  if(!login[0] && !login2){
+    res.redirect('/login')
+  }  
+  
+  let data = await datafilterthismonth(bulan.length==0? 0 : bulan[0], load[0]) 
 
   res.render('index2', {
     layout: 'main-layout2',
