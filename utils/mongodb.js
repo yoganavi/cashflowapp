@@ -1,6 +1,6 @@
 const { ObjectID } = require('bson');
 const {MongoClient} = require('mongodb');
-const uri = "mongodb+srv://yoga:4TLK76yucf0QA3pQ@cluster0.kmlk0.mongodb.net/?retryWrites=true&w=majority"; 
+const uri = "mongodb+srv://yoga:makanyuk@cluster0.kmlk0.mongodb.net/?retryWrites=true&w=majority"; 
 // mongodb+srv://yoga:<password>@cluster0.kmlk0.mongodb.net/?retryWrites=true&w=majority
 
 // Database Name
