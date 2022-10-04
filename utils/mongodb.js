@@ -23,7 +23,6 @@ function mongodb(action,data,data2) {
       if (err) {
         return console.log("Connection Error:");
       };
-      // console.log(dbName);
       const db = client.db(dbName);
 
       if(action=='create'){
