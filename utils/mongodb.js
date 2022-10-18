@@ -133,6 +133,7 @@ async function datafilterthismonth(data,load){
 
 // total pengeluaran
 function totalPerBulan(data){
+  // console.log(data);
   let jumlah=0;
   data.forEach(e => {
     jumlah+=parseInt(e.harga)

@@ -64,7 +64,7 @@ app.get('/', async (req, res) => {
   res.render('index2', {
     layout: 'main-layout2',
     title: 'budget planner app',
-    month: today(bulan.length==0? 1 : bulan.join('')+1),
+    month: today(bulan.length==0? 1 : bulan.join()+1),
     fulldate: today(1,'fulldate'),
     data,
     color: filtercolor,
