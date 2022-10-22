@@ -3,7 +3,13 @@
   <!-- <button>submit</button> -->
 </form>
 
-<h3 data-total-belanja class="totalbelanja"><%= "Rp. "+new Intl.NumberFormat().format(totalThisMonth) %></h3>
+<h3 data-total-belanja="all" class="totalbelanja"><%= "Rp. "+new Intl.NumberFormat().format(totalThisMonth) %></h3>
+<h5 data-total-belanja="yoga" class="totalbelanja">
+  <span>Yoga : <%= "Rp. "+new Intl.NumberFormat().format(totalYoga) %></span>
+</h5>
+<h5 data-total-belanja="reysa" class="totalbelanja">
+  <span>Reysa : <%= "Rp. "+new Intl.NumberFormat().format(totalReysa) %></span>
+</h5>
 
 <ul data-secb class="secb collapsible popout">
   <% data.forEach(e => { %>
@@ -15,7 +21,14 @@
             <span data-secb-value class="title"><%= e.pembayaran %></span>
             <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
             <p data-secb-value><%= e.deskripsi %></p>
-            <a data-secb-value class="secondary-content"><%= e.tanggal %></a>
+            <a class="secondary-content">
+              <p data-secb-value>
+                <%= e.tanggal %>
+              </p>
+              <span data-secb-value>
+                <%= e.user %> 
+              </span>
+            </a>
           </li>
         </ul>
       </div>
@@ -47,32 +60,46 @@
 <div data-modal id="modal1" class="secd modal">
   <div class="modal-content">
     <form class="col s12" method="post" action="/send">
-      <!-- datae picker -->
-      <div class="input-field col s12">
-        <p>Tanggal Transaksi</p>
-        <input name="tanggal" type="text" id="tanggaltansaksi" class="datepicker" value=<%= fulldate %>>
-        <!-- <input id="last_name" type="text" class="validate"> -->
-        <!-- <label for="tanggaltansaksi">Tanggal Transaksi</label> -->
+      <!-- date picker -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <p>Tanggal Transaksi</p>
+          <input name="tanggal" type="text" id="tanggaltansaksi" class="datepicker" value=<%= fulldate %>>
+          <!-- <input id="last_name" type="text" class="validate"> -->
+          <!-- <label for="tanggaltansaksi">Tanggal Transaksi</label> -->
+        </div>
       </div>
-      <!-- form selet -->
-      <div class="input-field col s12">
-        <select name="pembayaran">
-          <!-- <option value="" disabled selected>payment method</option> -->
-          <option value="cimb">cimb</option>
-          <option value="mega">mega</option>
-          <option value="gopay">gopay</option>
-          <option value="gopaylatter">gopaylatter</option>
-          <option value="debit">debit</option>
-        </select>
+      <!-- select pembayaran -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <select data-formselect name="pembayaran">
+            <!-- <option value="" disabled selected>payment method</option> -->
+            <option value="cimb">cimb</option>
+            <option value="mega">mega</option>
+            <option value="gopay">gopay</option>
+            <option value="gopaylatter">gopaylatter</option>
+            <option value="debit">debit</option>
+          </select>
+        </div>
+      </div>
+      <!-- select user -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <select data-formselect name="user">
+            <option value="Yoga">Yoga</option>
+            <option value="Reysa">Reysa</option>
+          </select>
+          <label>User</label>
+        </div>
       </div>
       <div class="row">
-        <div class="input-field col s6">
+        <div class="input-field col s12 l6">
           <input name="deskripsi" id="deskripsi" type="text" class="validate">
           <label for="deskripsi">Deskripsi</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s6">
+        <div class="input-field col s12 l6">
           <input name="harga" id="harga" type="text" class="validate">
           <label for="harga">Harga</label>
         </div>

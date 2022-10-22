@@ -1,6 +1,6 @@
 // form select init
 function forminit(){
-	var elems = document.querySelector('select');
+	var elems = document.querySelectorAll('select');
 	var formInstances = M.FormSelect.init(elems, {});
 }
 document.addEventListener('DOMContentLoaded', function() {

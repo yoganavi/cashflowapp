@@ -23,7 +23,7 @@ function mongodb(action,data,data2) {
       if (err) {
         return console.log("Connection Error:");
       };
-      const db = client.db(dbName);
+      const db = client.db('cashflow');
 
       if(action=='create'){
         // create one
@@ -95,7 +95,7 @@ function today(data,days){
     if(data=='01'){
       return `${yyyy-1}-12`
     }
-    return `${yyyy}-0${data-1}`
+    return `${yyyy}-${String(data-1).padStart(2,'0')}`
   };
   let mm = String(today.getMonth() + data).padStart(2, '0'); //January is 0!
   if(days){
@@ -119,8 +119,14 @@ async function datafilterthismonth(data,load){
       return e
     } 
   })
-  // console.log(today(data));
-  // console.log(today(data+1));
+  let filterGopaylatter = read.filter(e=>{
+    if(e.tanggal > `${today(data+1)}-00` && e.tanggal < today(data+1)+'-'+'32' && e.pembayaran=='gopaylatter'){
+      return e
+    } 
+  })
+  filterGopaylatter.forEach(e => {
+    filtered.push(e)
+  });
 
   // sort data from new to old
   filtered.sort((a,b)=>{
@@ -132,12 +138,27 @@ async function datafilterthismonth(data,load){
 // datafilterthismonth(0)
 
 // total pengeluaran
-function totalPerBulan(data){
-  // console.log(data);
+function totalPerBulan(data,user){
   let jumlah=0;
-  data.forEach(e => {
-    jumlah+=parseInt(e.harga)
-  });
+  if(user==undefined){
+    data.forEach(e => {
+      jumlah+=parseInt(e.harga)
+    });
+  };
+  if(user=='yoga'){
+    data.forEach(e=>{
+      if(e.user=='Yoga'){
+        jumlah+=parseInt(e.harga)
+      }
+    })
+  };
+  if(user=='reysa'){
+    data.forEach(e=>{
+      if(e.user=='Reysa'){
+        jumlah+=parseInt(e.harga)
+      }
+    })
+  };
   return jumlah
 }
 
@@ -150,7 +171,7 @@ function filtercolor(data){
 }
 
 
-module.exports = { today, datafilterthismonth, filtercolor, mongodb, totalPerBulan, chosedb }
+module.exports = { today, datafilterthismonth, filtercolor, mongodb, totalPerBulan }
 
 let asd = ['cimb','mega']
 

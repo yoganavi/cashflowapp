@@ -21,6 +21,9 @@ form.seca input{
 }
 .totalbelanja{
   text-align: center;
+  margin: 10px 0 10px 0;
+}
+[data-total-belanja='all']{
   margin: 30px 0 35px 0;
 }
 .secb ul li i{
@@ -39,6 +42,9 @@ form.seca input{
 }
 .collapsible-header ul{
   width: 100%;
+}
+.secd.modal{
+  /* width: 20% !important; */
 }
 .sece.modal{
   background: rgba(255, 255, 255, 0) !important;

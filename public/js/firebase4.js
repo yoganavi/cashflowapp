@@ -1,7 +1,7 @@
 let pilihbulan=	document.querySelector('.seca[data-bulan]'),
 forms =	document.querySelector('[data-modal] form'),
 inputs =	document.querySelectorAll('[data-modal] form input'),
-formselect =	document.querySelector('[data-modal] form select'),
+formselect =	document.querySelectorAll('[data-formselect]'),
 floatingbtn =	document.querySelectorAll('[data-floatbtn] ul li a'),
 daftardata = document.querySelectorAll('[data-secb]>li'),
 actionbtn = document.querySelectorAll('[data-secb-button]') // edit & delete button
@@ -16,7 +16,7 @@ pilihbulan.addEventListener('input', function() {
 floatingbtn.forEach(e => {
 	e.addEventListener('click', function() {
 		forms.reset();
-		formselect.value=e.name;
+		formselect[0].value=e.name;
 		forminit();
 		forms.action='/send';
 		forms.querySelector('button i').innerText='add' // submit button on modal
@@ -36,9 +36,10 @@ daftardata.forEach((el,i) => {
 // edit data section
 function edit(index,datas,id){
 	actionbtn[index].firstElementChild.addEventListener('click',()=>{
-		formselect.value=datas[0].innerHTML // select pembayaran
+		formselect[0].value=datas[0].innerHTML // select pembayaran
+		formselect[1].value=datas[4].innerText // select user
 		forminit();
-		inputs[0].value = datas[3].innerHTML // tanggal
+		inputs[0].value = datas[3].innerText // tanggal
 		inputs[1].value = datas[2].innerHTML // deskripsi
 		inputs[2].value = datas[1].innerHTML.slice(4).replace(",", "") // harga
 		forms.action='/edit/'+id;

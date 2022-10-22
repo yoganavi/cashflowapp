@@ -3,7 +3,7 @@ var expressLayouts = require('express-ejs-layouts');
 const { mongo } = require('mongoose');
 const app = express()
 // const Data = require('./mongoose.js')
-const {today, datafilterthismonth, filtercolor, mongodb, totalPerBulan, chosedb} = require('./utils/mongodb.js');
+const {today, datafilterthismonth, filtercolor, mongodb, totalPerBulan} = require('./utils/mongodb.js');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
@@ -32,35 +32,33 @@ app.use(flash());
 
 let login2;
 // login page
-app.get('/login', (req, res)=>{
-  res.render('login',{
-    layout: 'main-login',
-    title: 'Login | Budget Plan',
-  })
-})
+// app.get('/login', (req, res)=>{
+//   res.render('login',{
+//     layout: 'main-login',
+//     title: 'Login | Budget Plan',
+//   })
+// })
 
-app.post('/login', (req, res)=>{
-  console.log(req.body);
-  chosedb(req.body.username);
-  req.flash('login', 1);
-  login2=true;
-  res.redirect('/')
-})
+// app.post('/login', (req, res)=>{
+//   console.log(req.body);
+//   chosedb(req.body.username);
+//   req.flash('login', 1);
+//   login2=true;
+//   res.redirect('/')
+// })
 
 app.get('/', async (req, res) => {
   // let data = await Data.find()
   let bulan=req.flash('msg'); //! output berupa array 
   let load=req.flash('msg2'); //! output berupa array
   let login=req.flash('login'); //! output berupa array
-  console.log(bulan);
-  console.log(login);
-  console.log(login2);
-  if(!login[0] && !login2){
-    res.redirect('/login')
-  }  
+  // console.log(login);
+  // console.log(login2);
+  // if(!login[0] && !login2){
+  //   res.redirect('/login')
+  // }  
   
   let data = await datafilterthismonth(bulan.length==0? 0 : bulan[0], load[0]) 
-
   res.render('index2', {
     layout: 'main-layout2',
     title: 'budget planner app',
@@ -68,7 +66,9 @@ app.get('/', async (req, res) => {
     fulldate: today(1,'fulldate'),
     data,
     color: filtercolor,
-    totalThisMonth: totalPerBulan(data)
+    totalThisMonth: totalPerBulan(data),
+    totalYoga: totalPerBulan(data,'yoga'),
+    totalReysa: totalPerBulan(data,'reysa')
   });
 });
 
@@ -82,7 +82,6 @@ app.post('/send', (req, res) => {
 app.post('/gantiBulan', (req, res) => {
   let bulan = req.body.bulan.split('');
   bulan = bulan[5]+bulan[6]
-  // console.log(bulan);
   // let data = await datafilterthismonth(bulan)
   // console.log(data);
   req.flash('msg', bulan);
