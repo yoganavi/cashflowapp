@@ -24,7 +24,7 @@ function mongodb(action,data,data2) {
         return console.log("Connection Error:");
       };
       const db = client.db('cashflow');
-
+      
       if(action=='create'){
         // create one
         db.collection("datas").insertOne(
@@ -83,56 +83,77 @@ function mongodb(action,data,data2) {
 //   return tanggal
 // }
 
-
-function today(data,days){
+function today(data){
   let today = new Date();
   let yyyy = today.getFullYear();
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   let dd = String(today.getDate()).padStart(2, '0');
-  if(typeof(data)=='string'){
-    if(data.length>2){
-      return `${yyyy}-${data.split('',2).join('')}`
-    }
-    if(data=='01'){
-      return `${yyyy-1}-12`
-    }
-    return `${yyyy}-${String(data-1).padStart(2,'0')}`
-  };
-  let mm = String(today.getMonth() + data).padStart(2, '0'); //January is 0!
-  if(days){
-    return yyyy + '-' + mm + '-' + dd;
-  }
-  return yyyy + '-' + mm;
-}
+  // if(typeof(data)=='string'){
+  //   if(data.length>2){
+  //     return `${yyyy}-${data.split('',2).join('')}`
+  //   }
+  //   if(data=='01'){
+  //     console.log(data-1);
+  //     return `${yyyy-1}-12`
+  //   }
+  //   console.log(data-1);
+  //   return `${yyyy}-${String(data-1).padStart(2,'0')}`
+  // };
 
-// mongodb('read').then(data=>{
-//   console.log(data)
-// });  
+  if(data==0){ // special chase for pick month in januari
+    // console.log(data);
+    return `${yyyy-1}-12`
+  };
+  if(data=='fulldate'){
+    return yyyy + '-' + mm + '-' + dd;
+  };
+  if(data=="startMonth"){
+    return yyyy + '-' + mm;
+  };
+  console.log('object');
+  return `${yyyy}-${String(data).padStart(2,'0')}`
+}
 
 let read;
 async function datafilterthismonth(data,load){
-  if(load!='0'){
+  
+  if(data==0){ // data bulan 0 karena halaman baru dibuka / refresh 
+    console.log('readalldata');
     read = await mongodb('read');
-  }
+    data = today("startMonth").split('-')[1] //generate data yyyy-mm saat ini dan ambil data bulanny saja
+  };
+  console.log('not readalldata');
+  let startDate = today(data-1);
+  let endDate = today(data);
+  console.log(`${startDate} > ${endDate}`);
 
   let filtered = read.filter(e=>{
-    if(e.tanggal > `${today(data)}-20` && e.tanggal < today(data+1)+'-'+'19' && e.pembayaran!='gopaylatter'){
+    if(e.tanggal > `${startDate}-19` && e.tanggal < `${endDate}-20` && e.pembayaran!='gopaylatter' && e.pembayaran!='debit' && e.pembayaran!='mega'){
+      return e
+    }
+  })
+
+  // filter gopaylatter & debit
+  let gopayLatter = read.filter(e=>{
+    if(e.tanggal > `${endDate}-00` && e.tanggal < endDate+'-'+'32' && (e.pembayaran=='gopaylatter' || e.pembayaran=='debit')){
       return e
     } 
   })
-  let filterGopaylatter = read.filter(e=>{
-    if(e.tanggal > `${today(data+1)}-00` && e.tanggal < today(data+1)+'-'+'32' && e.pembayaran=='gopaylatter'){
+  
+  // filter mega
+  let mega = read.filter(e=>{
+    if(e.tanggal > `${startDate}-22` && e.tanggal < `${endDate}-23` && e.pembayaran=='mega'){
       return e
     } 
   })
-  filterGopaylatter.forEach(e => {
-    filtered.push(e)
-  });
+
+  let allFilteredData = [...filtered,...gopayLatter,...mega]
 
   // sort data from new to old
-  filtered.sort((a,b)=>{
+  allFilteredData.sort((a,b)=>{
 		return new Date(b.tanggal) - new Date(a.tanggal)
 	});
-  return filtered
+  return allFilteredData
 }
 
 // datafilterthismonth(0)
@@ -140,7 +161,7 @@ async function datafilterthismonth(data,load){
 // total pengeluaran
 function totalPerBulan(data,user){
   let jumlah=0;
-  if(user==undefined){
+  if(user=='all'){
     data.forEach(e => {
       jumlah+=parseInt(e.harga)
     });
