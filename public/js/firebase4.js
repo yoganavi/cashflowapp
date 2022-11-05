@@ -29,15 +29,10 @@ floatingbtn.forEach(e => {
 // delete section
 daftardata.forEach((el,i) => {
 	el.addEventListener('click', function() {
-		// actionbtn[i].lastElementChild.addEventListener('click',()=>{
-		// 	let Promt=prompt('ketik: setuju')
-		// 	if(Promt!='setuju'){
-		// 		return alert('coba lagi')
-		// 	}
-		// })
 		actionbtn[i].lastElementChild.href='/delete/'+el.id;
-		let datas = el.querySelector('[data-secb-value]')
+		let datas = el.querySelectorAll('[data-secb-value]')
 		edit(i,datas,el.id)
+		console.log(datas);
 	})
 });
 
