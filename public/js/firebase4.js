@@ -1,3 +1,5 @@
+// const e = require("connect-flash");
+
 let pilihbulan=	document.querySelector('.seca[data-bulan]'),
 forms =	document.querySelector('[data-modal] form'),
 inputs =	document.querySelectorAll('[data-modal] form input'),
@@ -27,9 +29,25 @@ floatingbtn.forEach(e => {
 // delete section
 daftardata.forEach((el,i) => {
 	el.addEventListener('click', function() {
+		// actionbtn[i].lastElementChild.addEventListener('click',()=>{
+		// 	let Promt=prompt('ketik: setuju')
+		// 	if(Promt!='setuju'){
+		// 		return alert('coba lagi')
+		// 	}
+		// })
 		actionbtn[i].lastElementChild.href='/delete/'+el.id;
-		let datas = el.querySelectorAll('[data-secb-value]')
+		let datas = el.querySelector('[data-secb-value]')
 		edit(i,datas,el.id)
+	})
+});
+
+actionbtn.forEach(el => {
+	el.lastElementChild.addEventListener('click',(el1)=>{
+		let Promt=prompt('ketik: setuju')
+			if(Promt!='setuju'){
+				el1.preventDefault()
+				return alert('coba lagi')
+			}
 	})
 });
 
