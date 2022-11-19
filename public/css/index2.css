@@ -1,3 +1,7 @@
+nav{
+  width: min(100%, 1100px);
+  margin-inline: auto;
+}
 nav .brand-logo{
   height: 100%;
   display: flex;
@@ -25,6 +29,10 @@ form.seca input{
 }
 [data-total-belanja='all']{
   margin: 30px 0 35px 0;
+}
+.secb.collapsible.popout{
+  width: min(100%, 1000px); 
+  margin-inline: auto;
 }
 .secb ul li i{
   text-transform: capitalize;

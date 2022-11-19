@@ -10,7 +10,7 @@ section{
 }
 .seca{
   /* border: 2px solid black; */
-  width: min(100% - 30px,500px);
+  width: min((100% - 30px),800px);
 }
 .seca form button{
   border-radius: 50px ;
