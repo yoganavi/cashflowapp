@@ -1,0 +1,112 @@
+<form data-bulan method="post" action="/gantiBulan" class="seca">
+  <input name="bulan" type="month" value=<%= month %>  >
+  <!-- <button>submit</button> -->
+</form>
+
+<h3 data-total-belanja="all" class="totalbelanja"><%= "Rp. "+new Intl.NumberFormat().format(totalThisMonth) %></h3>
+<h5 data-total-belanja="yoga" class="totalbelanja">
+  <span>Yoga : <%= "Rp. "+new Intl.NumberFormat().format(totalYoga) %></span>
+</h5>
+<h5 data-total-belanja="reysa" class="totalbelanja">
+  <span>Reysa : <%= "Rp. "+new Intl.NumberFormat().format(totalReysa) %></span>
+</h5>
+
+<ul data-secb class="secb collapsible popout">
+  <% data.forEach(e => { %>
+    <li id=<%= e._id %> >
+      <div class="collapsible-header">
+        <ul class="collection">
+          <li class="collection-item avatar" >
+            <i class="circle <%= color(e.pembayaran)[0]  %>"><%= color(e.pembayaran)[1]  %> </i>
+            <span data-secb-value class="title"><%= e.pembayaran %></span>
+            <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
+            <p data-secb-value><%= e.deskripsi %></p>
+            <a class="secondary-content">
+              <p data-secb-value>
+                <%= e.tanggal %>
+              </p>
+              <span data-secb-value>
+                <%= e.user %> 
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div data-secb-button class="collapsible-body">
+        <a class="waves-effect waves-light btn">Edit</a>
+        <a class="waves-effect waves-light btn red">Delete</a>
+      </div>
+    </li>
+  <% }) %>
+</ul>
+
+<!-- floating button -->
+<div data-floatbtn class="secc fixed-action-btn">
+  <a class="btn-floating btn-large red">
+    <i class="large material-icons">mode_edit</i>
+  </a>
+  <ul>
+    <li><a class="btn-floating red" name='cimb'>C</a></li>
+    <li><a class="btn-floating yellow darken-1" name='mega'>M</a></li>
+    <li><a class="btn-floating green" name='gopay'>G</a></li>
+    <li><a class="btn-floating lime" name="gopaylatter">GL</a></li>
+    <li><a class="btn-floating blue" name="debit">D</a></li>
+  </ul>
+</div>
+
+<!-- Modal Add & edit data -->
+<div data-modal id="modal1" class="secd modal">
+  <div class="modal-content">
+    <form class="col s12" method="post" action="/send">
+      <!-- date picker -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <p>Tanggal Transaksi</p>
+          <input name="tanggal" type="text" id="tanggaltansaksi" class="datepicker" value=<%= fulldate %>>
+          <!-- <input id="last_name" type="text" class="validate"> -->
+          <!-- <label for="tanggaltansaksi">Tanggal Transaksi</label> -->
+        </div>
+      </div>
+      <!-- select pembayaran -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <select data-formselect name="pembayaran">
+            <!-- <option value="" disabled selected>payment method</option> -->
+            <option value="cimb">cimb</option>
+            <option value="mega">mega</option>
+            <option value="gopay">gopay</option>
+            <option value="gopaylatter">gopaylatter</option>
+            <option value="debit">debit</option>
+            <option value="kredit">kredit</option>
+          </select>
+        </div>
+      </div>
+      <!-- select user -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <select data-formselect name="user">
+            <option value="Yoga">Yoga</option>
+            <option value="Reysa">Reysa</option>
+          </select>
+          <label>User</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <input name="deskripsi" id="deskripsi" type="text" class="validate">
+          <label for="deskripsi">Deskripsi</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <input name="harga" id="harga" type="number" class="validate" min=1000 required>
+          <label for="harga">Harga</label>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light" type="submit">Submit
+        <i class="material-icons right">send</i>
+      </button>
+      <a class="waves-effect modal-close red btn">Cancel</a>
+    </form>
+  </div>
+</div>

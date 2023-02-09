@@ -1,0 +1,60 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  position: relative;
+}
+.seca{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  padding: 5% 5%;
+}
+.seca .kartu{
+  padding: 3% 2% 0 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.seca .a1{
+  padding: 0;
+  align-self: flex-start;
+}
+.seca .a1 img{
+  margin: 0 0 -5px 0;
+}
+.seca .a2{
+  padding-bottom: 25px;
+  border-radius: 20px;
+  background: rgba(245, 245, 245, 0.4);
+}
+.seca .a2 .a2a{
+  display: flex;
+}
+.seca .a2 .judul h3{
+  font-weight: bolder;
+  color: whitesmoke;
+  /* color: rgba(0, 0, 0, 0.465); */
+  text-align: center;
+}
+.seca .a2 form{
+  display: block;
+  margin: 0 auto;
+}
+.seca .a2 form button{
+  margin: 15px 0 0 5%;
+  border-radius: 6px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .seca .a2 .judul h3{
+    color: black;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  
+}
+

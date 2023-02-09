@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+     <!-- Import Google Icon Font-->
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <!-- materialize.css-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--my CSS -->
+    <link rel="stylesheet" type="text/css" href="css/index2.css">
+
+    <title><%= title %>  </title>
+
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/ce27987ac1.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav>
+      <div class="nav-wrapper container">
+        <a href="#!" class="brand-logo"><img src="http://drive.google.com/uc?export=view&id=1oAOz-yS44yShNtVj8XZSnNLmduBoJ2E6" alt=""></a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <% const menu = ["summary","pemasukan"] %> 
+        <ul class="right hide-on-med-and-down">
+          <li><a onclick="modalInstance2.open()"><%= menu[0] %> </a></li>
+          <li><a onclick="modalInstance1.open()"><%= menu[1] %></a></li>
+        </ul>
+      </div>
+    </nav>
+  
+    <ul class="sidenav" id="mobile-demo">
+      <li><a onclick="modalInstance2.open()"><%= menu[0] %> </a></li>
+      <li><a onclick="modalInstance1.open()"><%= menu[1] %></a></li>
+    </ul>
+
+    <!-- modal for navbar menu summary and pemasukan -->
+    <%- include ('modalNav.ejs') %> 
+    <!-- / navbar -->
+    
+    <%- body %> <!--index2.ejs-->
+
+    <!-- materialize JS -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js" integrity="sha512-m2PhLxj2N91eYrIGU2cmIu2d0SkaE4A14bCjVb9zykvp6WtsdriFCiXQ/8Hdj0kssUB/Nz0dMBcoLsJkSCto0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- materialize init -->
+    <script type="text/javascript" src="js/materialize-init.js?114"></script>
+    <!-- user js -->
+    <script type="text/javascript" src="js/firebase4.js?114"></script>
+
+  </body>
+</html>
