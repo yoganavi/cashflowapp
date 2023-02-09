@@ -83,7 +83,7 @@ function mongodb(action,data,data2) {
 //   return tanggal
 // }
 
-function today(data){
+function today(data,tahun){
   let today = new Date();
   let yyyy = today.getFullYear();
   let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -102,7 +102,7 @@ function today(data){
 
   if(data==0){ // special chase for pick month in januari
     // console.log(data);
-    return `${yyyy-1}-12`
+    return `${tahun-1}-12`
   };
   if(data=='fulldate'){
     return yyyy + '-' + mm + '-' + dd;
@@ -111,24 +111,29 @@ function today(data){
     return yyyy + '-' + mm;
   };
   console.log('object');
-  return `${yyyy}-${String(data).padStart(2,'0')}`
+  return `${tahun}-${String(data).padStart(2,'0')}`
 }
 
 let read;
-async function datafilterthismonth(data,load){
-  
-  if(data==0){ // data bulan 0 karena halaman baru dibuka / refresh 
+async function datafilterthismonth(data,tahun,readData,kredit){
+  console.log(Boolean(readData));
+  if(data==0 || readData){ // data bulan 0 karena halaman baru dibuka / refresh 
     console.log('readalldata');
     read = await mongodb('read');
-    data = today("startMonth").split('-')[1] //generate data yyyy-mm saat ini dan ambil data bulanny saja
+    if(!readData){ // readData > true itu alur dari edit data jadi jgn di generate bulan dan tahun dibawah krn akan membaca bulan saat ini
+      data = today("startMonth").split('-')[1] //generate data yyyy-mm saat ini dan ambil data bulanny saja
+      tahun = today("startMonth").split('-')[0] //generate data yyyy-mm saat ini dan ambil data tahun saja
+    }
   };
   console.log('not readalldata');
-  let startDate = today(data-1);
-  let endDate = today(data);
-  console.log(`${startDate} > ${endDate}`);
+  console.log(data);
+  console.log(tahun);
+  let startDate = today(data-1,tahun);
+  let endDate = today(data,tahun);
+  console.log(`start end date > ${startDate} > ${endDate}`);
 
   let filtered = read.filter(e=>{
-    if(e.tanggal > `${startDate}-19` && e.tanggal < `${endDate}-20` && e.pembayaran!='gopaylatter' && e.pembayaran!='debit' && e.pembayaran!='mega'){
+    if(e.tanggal > `${startDate}-19` && e.tanggal < `${endDate}-20` && e.pembayaran!='gopaylatter' && e.pembayaran!='debit' && e.pembayaran!='mega' && e.pembayaran!='kredit'){
       return e
     }
   })
@@ -136,6 +141,13 @@ async function datafilterthismonth(data,load){
   // filter gopaylatter & debit
   let gopayLatter = read.filter(e=>{
     if(e.tanggal > `${endDate}-00` && e.tanggal < endDate+'-'+'32' && (e.pembayaran=='gopaylatter' || e.pembayaran=='debit')){
+      return e
+    } 
+  })
+
+  // filter kredit
+  let dataKredit = read.filter(e=>{
+    if(e.tanggal > `${endDate}-00` && e.tanggal < endDate+'-'+'32' && e.pembayaran=='kredit'){
       return e
     } 
   })
@@ -153,6 +165,9 @@ async function datafilterthismonth(data,load){
   allFilteredData.sort((a,b)=>{
 		return new Date(b.tanggal) - new Date(a.tanggal)
 	});
+
+  if(kredit) return dataKredit
+
   return allFilteredData
 }
 
@@ -185,10 +200,12 @@ function totalPerBulan(data,user){
 
 
 function filtercolor(data){
-  if(data=='cimb'){ return ['red',...data[0]]};
-  if(data=='mega'){ return ['yellow',...data[0]] };
-  if(data=='debit'){ return ['blue',...data[0]] }
-	if(data=='gopay' || data=="gopaylatter"){ return ['green',...data[0]] }
+  if(data=='cimb') return ['red',...data[0]];
+  if(data=='mega') return ['yellow',...data[0]];
+  if(data=='debit') return ['blue',...data[0]]
+	if(data=='gopay') return ['green',...data[0]]
+  if(data=="gopaylatter") return ['lime','GL']
+  if(data=="kredit") return ['cyan','K']
 }
 
 

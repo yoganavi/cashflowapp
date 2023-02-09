@@ -40,6 +40,7 @@
   <% }) %>
 </ul>
 
+<!-- floating button -->
 <div data-floatbtn class="secc fixed-action-btn">
   <a class="btn-floating btn-large red">
     <i class="large material-icons">mode_edit</i>
@@ -48,15 +49,12 @@
     <li><a class="btn-floating red" name='cimb'>C</a></li>
     <li><a class="btn-floating yellow darken-1" name='mega'>M</a></li>
     <li><a class="btn-floating green" name='gopay'>G</a></li>
-    <li><a class="btn-floating green" name="gopaylatter">GL</a></li>
+    <li><a class="btn-floating lime" name="gopaylatter">GL</a></li>
     <li><a class="btn-floating blue" name="debit">D</a></li>
   </ul>
 </div>
 
-<!-- Modal Trigger -->
-<!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
-
-<!-- Modal Add data -->
+<!-- Modal Add & edit data -->
 <div data-modal id="modal1" class="secd modal">
   <div class="modal-content">
     <form class="col s12" method="post" action="/send">
@@ -79,6 +77,7 @@
             <option value="gopay">gopay</option>
             <option value="gopaylatter">gopaylatter</option>
             <option value="debit">debit</option>
+            <option value="kredit">kredit</option>
           </select>
         </div>
       </div>
@@ -111,4 +110,3 @@
     </form>
   </div>
 </div>
-

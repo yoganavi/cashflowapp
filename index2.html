@@ -42,7 +42,18 @@
 
 			<script>
 				console.log(Date.now());				
-				console.log(new Date());				
+				console.log(new Date());	
+				
+					var xhr = new XMLHttpRequest();
+					xhr.open("GET", "https://cashflowapp.yogasaja.repl.co/", true);
+					xhr.onreadystatechange = function() {
+							if (xhr.readyState === 4 && xhr.status === 200) {
+									console.log("server on");
+							}else if(xhr.status != 200){
+								console.error("error: " + xhr.status + " server down");
+							}
+					};
+					xhr.send();
 			</script>
     </body>
   </html>

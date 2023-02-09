@@ -23,24 +23,24 @@
       <div class="nav-wrapper container">
         <a href="#!" class="brand-logo"><img src="http://drive.google.com/uc?export=view&id=1oAOz-yS44yShNtVj8XZSnNLmduBoJ2E6" alt=""></a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <% const menu = ["summary","pemasukan"] %> 
         <ul class="right hide-on-med-and-down">
-          <!-- <li><a href="sass.html">Sass</a></li>
-          <li><a href="badges.html">Components</a></li>
-          <li><a href="collapsible.html">Javascript</a></li>
-          <li><a href="mobile.html">Mobile</a></li> -->
+          <li><a onclick="modalInstance2.open()"><%= menu[0] %> </a></li>
+          <li><a onclick="modalInstance1.open()"><%= menu[1] %></a></li>
         </ul>
       </div>
     </nav>
   
     <ul class="sidenav" id="mobile-demo">
-      <li><a href="sass.html">Sass</a></li>
-      <li><a href="badges.html">Components</a></li>
-      <li><a href="collapsible.html">Javascript</a></li>
-      <li><a href="mobile.html">Mobile</a></li>
+      <li><a onclick="modalInstance2.open()"><%= menu[0] %> </a></li>
+      <li><a onclick="modalInstance1.open()"><%= menu[1] %></a></li>
     </ul>
+
+    <!-- modal for navbar menu summary and pemasukan -->
+    <%- include ('modalNav.ejs') %> 
     <!-- / navbar -->
     
-    <%- body %> 
+    <%- body %> <!--index2.ejs-->
 
     <!-- materialize JS -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->

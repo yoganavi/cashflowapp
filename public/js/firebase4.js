@@ -22,7 +22,7 @@ floatingbtn.forEach(e => {
 		forminit();
 		forms.action='/send';
 		forms.querySelector('button i').innerText='add' // submit button on modal
-		modalInstance[0].open();
+		modalInstance.open();
 	})
 });
 
@@ -54,10 +54,10 @@ function edit(index,datas,id){
 		forminit();
 		inputs[0].value = datas[3].innerText // tanggal
 		inputs[1].value = datas[2].innerHTML // deskripsi
-		inputs[2].value = datas[1].innerHTML.slice(4).replace(",", "") // harga
-		forms.action='/edit/'+id;
+		inputs[2].value = datas[1].innerHTML.slice(4).replace(/,/g, "") // harga
+		forms.action=`/edit/${id}/${pilihbulan.children[0].value}`;
 		M.updateTextFields()
 		forms.querySelector('button i').innerText='edit' // submit button on modal
-		modalInstance[0].open();
+		modalInstance.open();
 	})
 }

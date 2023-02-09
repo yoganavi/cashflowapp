@@ -12,10 +12,24 @@ document.addEventListener('DOMContentLoaded', function() {
 	var instances = M.FloatingActionButton.init(elems, {	});
 });
 // modals init
-var elem = document.querySelectorAll('.modal');
+var elem = document.querySelector('#modal1');
 var modalInstance = M.Modal.init(elem, {
 	startingTop: '0%',
-	endingTop: '25%',
+	endingTop: '20%',
+	opacity: 0.2,
+});
+// modals navbar pemasukan
+var elem1 = document.querySelector('#modal2');
+var modalInstance1 = M.Modal.init(elem1, {
+	startingTop: '0%',
+	endingTop: '20%',
+	opacity: 0.2,
+});
+// modals navbar summary
+var elem2 = document.querySelector('#modal3');
+var modalInstance2 = M.Modal.init(elem2, {
+	startingTop: '0%',
+	endingTop: '20%',
 	opacity: 0.2,
 });
 // date picker
@@ -38,5 +52,3 @@ document.addEventListener('DOMContentLoaded', function() {
 	var elems = document.querySelectorAll('.sidenav');
 	var instances = M.Sidenav.init(elems, {});
 });
- 
-	

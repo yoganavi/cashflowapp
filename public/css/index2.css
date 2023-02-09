@@ -1,6 +1,6 @@
 nav{
-  width: min(100%, 1100px);
-  margin-inline: auto;
+  /* width: min(100%, 1100px); */
+  /* margin-inline: auto; */
 }
 nav .brand-logo{
   height: 100%;
@@ -21,7 +21,26 @@ form.seca{
 form.seca input{
   height: 40px;
   padding: 0 20px;
-  border-radius: 5px;
+  border-radius: 25px;
+  width: min(60%,200px);
+  font-size: large;
+  text-align: center;
+  background: black;
+  border: 3px solid wheat;
+  color: wheat;
+  height: 50px !important;
+  position: relative;
+}
+.seca input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* display: block; */
+  background-color: wheat;
+  /* background: url(https://mywildalberta.ca/images/GFX-MWA-Parks-Reservations.png) no-repeat; */
+  width: 100%;
+  height: 100%;
 }
 .totalbelanja{
   text-align: center;
@@ -30,6 +49,7 @@ form.seca input{
 [data-total-belanja='all']{
   margin: 30px 0 35px 0;
 }
+
 .secb.collapsible.popout{
   width: min(100%, 1000px); 
   margin-inline: auto;
@@ -41,12 +61,9 @@ form.seca input{
   text-transform: uppercase;
   font-weight: bold;
 }
-.secb ul li p:nth-of-type(1){
+/* harga */
+.secb ul li p:nth-of-type(1){ 
   font-size: large;
-}
-.secb .collection li p:nth-of-type(3){
-  font-weight: bold;
-
 }
 .collapsible-header ul{
   width: 100%;
@@ -65,4 +82,9 @@ form.seca input{
   gap: 5%;
   align-items: center;
   /* flex-direction: column; */
+}
+
+/* modal pemasukan on navbar */
+#modal2 .judul2{
+  font-weight: bold;
 }
