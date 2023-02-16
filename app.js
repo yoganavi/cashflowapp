@@ -112,6 +112,7 @@ app.get('/', async (req, res) => {
   // }  
   
   let data = await datafilterthismonth(bulan.length==0? 0 : bulan[0],tahun[0],forceRd[0]) 
+  console.log(data);
   res.render('index2', {
     layout: 'main-layout2',
     title: 'budget planner app',
