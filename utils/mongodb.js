@@ -1,5 +1,4 @@
-const { ObjectID } = require('bson');
-const {MongoClient} = require('mongodb');
+const {MongoClient, ObjectId} = require('mongodb');
 const uri = "mongodb+srv://yoga:makanyuk@cluster0.kmlk0.mongodb.net/?retryWrites=true&w=majority"; 
 // mongodb+srv://yoga:<password>@cluster0.kmlk0.mongodb.net/?retryWrites=true&w=majority
 
@@ -44,7 +43,7 @@ function mongodb(action,data,data2) {
       }else if(action=='delete'){
         // delete one
         db.collection("datas").deleteOne(
-          {_id: ObjectID(data)}, (err, result) => {
+          {_id: ObjectId(data)}, (err, result) => {
             if (err) {
               return console.log("Unable to delete user");
             }
@@ -54,7 +53,7 @@ function mongodb(action,data,data2) {
       }else if(action=='edit'){
         db.collection("datas").updateOne(
           {
-            _id: ObjectID(data)
+            _id: ObjectId(data)
           },
           {
             $set: data2

@@ -8,22 +8,6 @@ const {today, datafilterthismonth, filtercolor, mongodb, totalPerBulan} = requir
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-// const http = require('http');
-// setInterval(() => {
-//   http.get('http://cashflowapp.yogasaja.repl.co/',(res)=>{
-//           res.on('data',(chunk)=>{
-//             try {
-//               // optional logging... disable after it's working
-//               console.log("HEROKU RESPONSE: " + chunk);
-//             } catch (err) {
-//                 console.log(err.message);
-//             }
-//           })
-//       }).on('error', function(err) {
-//         console.log("Error: " + err.message);
-//       });
-  
-// }, 5000);
 
 const PORT = process.env.PORT || 3000
 
