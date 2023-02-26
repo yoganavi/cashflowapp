@@ -60,6 +60,7 @@
         <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(reysa) %></h6>
       </li>
       <li class="collection-item">
+        <% if(reysa<0) reysa=0 %>
         <h5 class="">Sisa</h5>
         <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalKredit-totalThisMonth-reysa) %></h6>
       </li>
@@ -69,3 +70,8 @@
     <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
   </div>
 </div>
+
+
+
+<!-- balnaja bulanan 442120 -->
+<!-- 342831 -->

@@ -83,7 +83,7 @@ app.get('/', async (req, res) => {
   dataLogin[1]=Date.now()
  
   // let data = await Data.find()
-  let bulan=req.flash('msg'); //! output berupa array 
+  let bulan=req.flash('bulan'); //! output berupa array 
   let tahun=req.flash('tahun'); //! output berupa array
   let forceRd = req.flash('readData')
   console.log(`bulannnnnnnnnnn ${bulan}`);
@@ -132,7 +132,7 @@ app.post('/gantiBulan', (req, res) => {
   let tahun = req.body.bulan.split('-')[0];
   // let data = await datafilterthismonth(bulan)
 
-  req.flash('msg', bulan);
+  req.flash('bulan', bulan);
   req.flash('tahun', tahun);
   res.redirect('/')
 });
@@ -145,8 +145,8 @@ app.get('/delete/:id', (req, res) => {
 // edit one data
 app.post('/edit/:id/:bulan', (req,res)=>{
   console.log(req.params.id);
-  console.log(req.body);
-  req.flash('msg', req.params.bulan.split('-')[1]);
+  console.log('app.js>edit data '+ req.params.bulan);
+  req.flash('bulan', req.params.bulan.split('-')[1]);
   req.flash('tahun', req.params.bulan.split('-')[0]);
   req.flash('readData', true);
   
