@@ -121,6 +121,7 @@ app.get('/', async (req, res) => {
 
 // add data to db
 app.post('/send', (req, res) => {
+  console.log('app.js>post/send '+req.body);
   console.log(req.body);
 
   mongodb('create',req.body).then(res.redirect('/'));
@@ -128,6 +129,7 @@ app.post('/send', (req, res) => {
 
 // ganti bulan
 app.post('/gantiBulan', (req, res) => {
+  console.log(req.body);
   let bulan = req.body.bulan.split('-')[1];
   let tahun = req.body.bulan.split('-')[0];
   // let data = await datafilterthismonth(bulan)
@@ -152,6 +154,11 @@ app.post('/edit/:id/:bulan', (req,res)=>{
   
   mongodb('edit',req.params.id,req.body).then(res.redirect('/'))
 });
+
+app.post('/kirimdata', (req,res)=>{
+  console.log('app.js>post/kirimdata');
+  console.log(req.body);
+})
 
 app.use('/', (req, res) => {
   console.log(`app.use/`);
