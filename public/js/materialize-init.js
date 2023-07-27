@@ -6,11 +6,13 @@ function forminit(){
 document.addEventListener('DOMContentLoaded', function() {
 	forminit();
 });
+
 // floating btn init
 document.addEventListener('DOMContentLoaded', function() {
 	var elems = document.querySelectorAll('.fixed-action-btn');
 	var instances = M.FloatingActionButton.init(elems, {	});
 });
+
 // modals init
 var elem = document.querySelector('#modal1');
 var modalInstance = M.Modal.init(elem, {
@@ -32,6 +34,7 @@ var modalInstance2 = M.Modal.init(elem2, {
 	endingTop: '20%',
 	opacity: 0.2,
 });
+
 // date picker
 document.addEventListener('DOMContentLoaded', function() {
 	var elems = document.querySelector('.datepicker');
