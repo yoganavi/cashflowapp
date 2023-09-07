@@ -77,3 +77,6 @@ function loading(srcBtn){
 	modalInstance.close();
 	containerLoad.classList.remove('hide');
 }
+
+// !temporary for development
+// modalInstance2.open()

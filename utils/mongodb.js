@@ -162,6 +162,20 @@ function totalPerBulan(data,user){
       }
     })
   };
+  if(user=='cimb'){
+    data.forEach(el => {
+      if(el.pembayaran=='cimb')  {
+        jumlah+=Number(el.harga)
+      }
+    });
+  }
+  if(user=='gopaylatter'){
+    data.forEach(el => {
+      if(el.pembayaran=='gopaylatter')  {
+        jumlah+=Number(el.harga)
+      }
+    });
+  }
   return jumlah
 }
 

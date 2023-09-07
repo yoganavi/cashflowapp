@@ -88,3 +88,19 @@ form.seca input{
 #modal2 .judul2{
   font-weight: bold;
 }
+
+/* modal for summary */
+.modal_summary .calculation{
+  text-align: center;
+  margin-top: 60px;
+}
+
+.modal_summary .row{
+  margin: auto;
+}
+
+.modal_summary button.calculation{
+  display: block;
+  margin: auto;
+
+}

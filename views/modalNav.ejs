@@ -48,7 +48,7 @@
 
 
 <!-- modal for summary -->
-<div id="modal3" class="modal">
+<div id="modal3" class="modal modal_summary">
   <div class="modal-content">
     <ul class="collection">
       <li class="collection-item">
@@ -66,8 +66,131 @@
         <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalKredit-totalThisMonth-reysa) %></h6>
       </li>
     </ul>
+
+    <!-- input data for calculation -->
+    <h4 class="calculation">Calculation</h4>
+    <div class="row">
+      <form data-calculation method="post" action="/datas" class="col s12">
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="cimbyoga"  name="cimbyoga" type="number" class="validate" value=0 >
+            <label for="cimbyoga">cimb yoga</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="cimbreysa" type="number" name="cimbreysa" class="validate" value=0 >
+            <label for="cimbreysa">cimb reysa</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="spp" name="spp" type="number" class="validate" value=0>
+            <label for="spp">spp+les+ngaji</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input name="saldomandiri" id="saldomandiri" type="number" class="validate" value=0>
+            <label for="saldomandiri">Saldo Mandiri</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input name="lain2" id="lain2" type="number" class="validate" value=0>
+            <label for="lain2">Tagihan CIMB lain</label>
+          </div>
+          <div class="input-field col s12">
+            <input name="angsuran" id="angsuran" type="number" class="validate" value=0>
+            <label for="angsuran">Angsuran lain2</label>
+          </div>
+        </div>
+      </form>
+      <button class="btn waves-effect waves-light calculation" type="submit" onclick="calculator()">Hitung</button>
+
+      <!-- result view -->
+      <ul data-result class="collection">
+        <li class="collection-item">
+          <h5 class="">Total Data Cimb</h5>
+          <h6 data-totaldatacimb class=""><%= "Rp. "+new Intl.NumberFormat().format(totalCimb) %></h6>
+        </li>
+        <li class="collection-item">
+          <h5 class="">Total Data Gopaylatter</h5>
+          <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalGopayLatter) %></h6>
+        </li>
+        <li class="collection-item">
+          <h5 class="">Total Data Cimb + Angs. lain2</h5>
+          <h6 data-totaldatacimb2 class=""></h6>
+        </li>
+        <li class="collection-item">
+          <h5 class="">Total Tagihan Cimb</h5>
+          <h6 data-totaltagihancimb class=""></h6>
+        </li>
+        <li class="collection-item">
+          <h5 class="">TF to CIMB Reysa</h5>
+          <h6 data-tftocimb class=""></h6>
+        </li>
+        <li class="collection-item">
+          <h5 class="">SISA</h5>
+          <h6 data-sisa class="sisa"></h6>
+        </li>
+      </ul>
+    </div>
   </div>
+
   <div class="modal-footer">
     <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
   </div>
 </div>
+
+<script>
+  let reysa = '<%=reysa%>';
+  let totalCimb = '<%=totalCimb%>';
+  let totalGopayLatter = '<%=totalGopayLatter%>';
+
+  function numberFormat(data){
+    let format = new Intl.NumberFormat().format(data)
+    return format
+  }
+
+  function selector(type, target){
+    if(type=='result'){
+      let el = document.querySelector(`ul[data-result] li h6[data-${target}]`)
+      return el
+    }
+    if(type=='inputs'){
+      let el = document.querySelectorAll(`form[data-calculation] input[name=${target}]`)[0];
+      return el
+    }
+  }
+
+  console.log(selector('result','totaldatacimb'));
+  console.log(selector('inputs','cimbyoga'));
+  function calculator(){
+    let total=Number(selector('inputs','cimbyoga').value)+Number(selector('inputs','cimbreysa').value);
+    let cimbLain2 = selector('inputs','lain2').value;
+
+    // result 
+    selector('result','totaldatacimb2').innerHTML = Number(totalCimb) + Number(cimbLain2); 
+    
+    selector('result','totaltagihancimb').innerHTML = `Rp. ${numberFormat(total)}`;
+
+    let tfToCimb = total+Number(reysa)+Number(selector('inputs','spp').value);
+
+    selector('result','tfToCimb').innerHTML =
+    `${numberFormat(total)}+
+    ${numberFormat(reysa)}+
+    ${numberFormat(selector('inputs','spp').value)}=
+    <br>
+    Rp. ${numberFormat(tfToCimb)}`;
+
+    selector('result','sisa').innerHTML = 
+    `Rp. ${numberFormat(
+      Number(selector('inputs','saldomandiri').value) + 
+      Number(selector('inputs','lain2').value) - 
+      Number(totalGopayLatter) - 
+      Number(selector('inputs','angsuran').value) -
+      tfToCimb
+    )}`;
+  }
+</script>

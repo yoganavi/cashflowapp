@@ -155,6 +155,16 @@ app.get('/sync',(req,res)=>{
   res.redirect('/')
 });
 
+app.post('/datas', (req,res)=>{
+  console.log(req.body.spp);
+  res.render('detailtagihan',{
+    layout: 'main-layout',
+    spp: req.body.spp,
+    title: 'budget planner app',
+    css: 'detailtagihan.css',
+  })
+})
+
 app.get('/', async (req, res) => {
   let bulan=req.flash('bulan'); //! output berupa array 
   let tahun=req.flash('tahun'); //! output berupa array
@@ -175,6 +185,8 @@ app.get('/', async (req, res) => {
     totalThisMonth: totalPerBulan(data,'all'),
     totalYoga: totalPerBulan(data,'yoga'),
     totalReysa: totalPerBulan(data,'reysa'),
+    totalCimb: totalPerBulan(data,'cimb'),
+    totalGopayLatter: totalPerBulan(data,'gopaylatter'),
   });
 });
 
