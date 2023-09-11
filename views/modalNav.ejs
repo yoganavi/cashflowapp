@@ -70,7 +70,7 @@
     <!-- input data for calculation -->
     <h4 class="calculation">Calculation</h4>
     <div class="row">
-      <form data-calculation method="post" action="/datas" class="col s12">
+      <form data-calculation class="col s12">
         <div class="row">
           <div class="input-field col s12">
             <input id="cimbyoga"  name="cimbyoga" type="number" class="validate" value=0 >
@@ -105,8 +105,8 @@
             <label for="angsuran">Angsuran lain2</label>
           </div>
         </div>
+        <button class="btn waves-effect waves-light calculation" type="submit">Hitung</button>
       </form>
-      <button class="btn waves-effect waves-light calculation" type="submit" onclick="calculator()">Hitung</button>
 
       <!-- result view -->
       <ul data-result class="collection">
@@ -115,16 +115,16 @@
           <h6 data-totaldatacimb class=""><%= "Rp. "+new Intl.NumberFormat().format(totalCimb) %></h6>
         </li>
         <li class="collection-item">
-          <h5 class="">Total Data Gopaylatter</h5>
-          <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalGopayLatter) %></h6>
-        </li>
-        <li class="collection-item">
-          <h5 class="">Total Data Cimb + Angs. lain2</h5>
+          <h5 class="">Total Data Cimb + Cimb lain2</h5>
           <h6 data-totaldatacimb2 class=""></h6>
         </li>
         <li class="collection-item">
           <h5 class="">Total Tagihan Cimb</h5>
           <h6 data-totaltagihancimb class=""></h6>
+        </li>
+        <li class="collection-item">
+          <h5 class="">Total Data Gopaylatter</h5>
+          <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalGopayLatter) %></h6>
         </li>
         <li class="collection-item">
           <h5 class="">TF to CIMB Reysa</h5>
@@ -144,53 +144,49 @@
 </div>
 
 <script>
-  let reysa = '<%=reysa%>';
-  let totalCimb = '<%=totalCimb%>';
-  let totalGopayLatter = '<%=totalGopayLatter%>';
-
+  let form = document.querySelector('form[data-calculation]');
+  let inputsCal = form.querySelectorAll('input'); 
+  
   function numberFormat(data){
     let format = new Intl.NumberFormat().format(data)
     return format
   }
 
-  function selector(type, target){
-    if(type=='result'){
-      let el = document.querySelector(`ul[data-result] li h6[data-${target}]`)
-      return el
-    }
-    if(type=='inputs'){
-      let el = document.querySelectorAll(`form[data-calculation] input[name=${target}]`)[0];
-      return el
-    }
+  function selector(target){
+    let el = document.querySelector(`ul[data-result] li h6[data-${target}]`)
+    return el
   }
 
-  console.log(selector('result','totaldatacimb'));
-  console.log(selector('inputs','cimbyoga'));
-  function calculator(){
-    let total=Number(selector('inputs','cimbyoga').value)+Number(selector('inputs','cimbreysa').value);
-    let cimbLain2 = selector('inputs','lain2').value;
+  form.onsubmit = (e)=>{
+    e.preventDefault();
 
-    // result 
-    selector('result','totaldatacimb2').innerHTML = Number(totalCimb) + Number(cimbLain2); 
+    let datasForm = {
+      reysa: Number('<%= reysa %>'),
+      totalCimb: Number('<%= totalCimb %>'),
+      totalGopayLatter: Number('<%= totalGopayLatter %>'),
+    };
+
+    inputsCal.forEach(el => {
+      datasForm[el.name] = Number(el.value)
+    });
+
+    // result
+    selector('totaldatacimb2').innerHTML = `Rp. ${numberFormat(datasForm.totalCimb + datasForm.lain2)}`;
     
-    selector('result','totaltagihancimb').innerHTML = `Rp. ${numberFormat(total)}`;
+    selector('totaltagihancimb').innerHTML = `Rp. ${numberFormat(datasForm.cimbyoga+datasForm.cimbreysa)}`;
 
-    let tfToCimb = total+Number(reysa)+Number(selector('inputs','spp').value);
+    let totalTfToCimb = datasForm.cimbyoga+datasForm.cimbreysa+datasForm.spp+datasForm.reysa; 
+    selector('tfToCimb').innerHTML =
+    `${datasForm.cimbyoga}+${datasForm.cimbreysa}+${datasForm.spp}+${datasForm.reysa} = <br>
+    Rp. ${numberFormat(totalTfToCimb)}`;
 
-    selector('result','tfToCimb').innerHTML =
-    `${numberFormat(total)}+
-    ${numberFormat(reysa)}+
-    ${numberFormat(selector('inputs','spp').value)}=
-    <br>
-    Rp. ${numberFormat(tfToCimb)}`;
-
-    selector('result','sisa').innerHTML = 
+    selector('sisa').innerHTML = 
     `Rp. ${numberFormat(
-      Number(selector('inputs','saldomandiri').value) + 
-      Number(selector('inputs','lain2').value) - 
-      Number(totalGopayLatter) - 
-      Number(selector('inputs','angsuran').value) -
-      tfToCimb
-    )}`;
+      datasForm.saldomandiri+
+      datasForm.lain2-
+      datasForm.totalGopayLatter-
+      datasForm.angsuran-
+      totalTfToCimb
+      )}`
   }
 </script>

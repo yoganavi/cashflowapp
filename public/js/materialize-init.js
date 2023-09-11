@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	var elems = document.querySelector('.datepicker');
 	var instances = M.Datepicker.init(elems, {
 		autoClose: true,
-		format: 'yyyy-mm-dd',
+		format: 'mmmm yyyy', // Display format
+    yearRange: [1900, 2100], // Year range
+    showClearBtn: true, // Clear button
 	});
 });
 

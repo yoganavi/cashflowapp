@@ -80,3 +80,10 @@ function loading(srcBtn){
 
 // !temporary for development
 // modalInstance2.open()
+
+function postDatas(){
+	let datas = {
+		month : pilihbulan.lastElementChild.value,
+	}
+	console.log(pilihbulan.lastElementChild.value);
+}

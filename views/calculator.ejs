@@ -1,0 +1,14 @@
+<form method="post" action="/calc" class="mont-picker">
+  <input name="bulan" type="month" value=<%= month %>  >
+</form>
+
+<ul class="collection">
+  <li class="collection-item">
+    <h5 class="">Total Data Cimb</h5>
+    <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalCimb) %></h6>
+  </li>
+  <li class="collection-item">
+    <h5 class="">Total Data Gopaylatter</h5>
+    <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalGopayLatter) %></h6>
+  </li>
+</ul>

@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8100
 
 // use ejs as view engine
 app.set('view engine', 'ejs');
@@ -155,13 +155,13 @@ app.get('/sync',(req,res)=>{
   res.redirect('/')
 });
 
-app.post('/datas', (req,res)=>{
-  console.log(req.body.spp);
-  res.render('detailtagihan',{
+app.post('/calc', (req,res)=>{
+  let spp = 2;
+  res.render('calculator',{
     layout: 'main-layout',
-    spp: req.body.spp,
+    spp: spp,
     title: 'budget planner app',
-    css: 'detailtagihan.css',
+    css: 'calculator.css',
   })
 })
 

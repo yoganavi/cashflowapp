@@ -239,6 +239,7 @@ function expiredToken(opr,cookie){
 function findTokenVal(res,next,cookieValue){
   let user = fs.readFileSync('data/user.json','utf-8');
   user=JSON.parse(user)
+  
   let token= user[0].token.find((el)=>{
     return el.value==cookieValue
   })
