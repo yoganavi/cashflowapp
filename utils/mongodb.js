@@ -1,6 +1,7 @@
 const {MongoClient, ObjectId} = require('mongodb');
 const uri = "mongodb+srv://yoga:makanyuk@cluster0.kmlk0.mongodb.net/?retryWrites=true&w=majority"; 
-const fs = require('fs')
+const fs = require('fs');
+const { json } = require('express');
 
 // Create a new MongoClient
 const client = new MongoClient(uri, { 
@@ -77,6 +78,7 @@ async function datafilterthismonth(bulan,tahun,readDBS,kredit){
   if(readDBS=='cloud'){ // readDBS > true itu alur dari edit & delete data jadi jgn di generate bulan dan tahun dibawah krn akan membaca bulan saat ini
     read = await mongodb('read');
     console.log('mongodb.dftm.readMOngoCloud');
+    
     try{
       await fs.writeFileSync('data/database.json', JSON.stringify(read));
     } catch(err){
