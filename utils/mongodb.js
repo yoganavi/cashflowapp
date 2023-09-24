@@ -106,14 +106,14 @@ async function datafilterthismonth(bulan,tahun,readDBS,kredit){
   console.log(`mongodb.dftm.start end date > ${startDate} > ${endDate}`);
 
   let filtered = read.filter(e=>{
-    if(e.tanggal > `${startDate}-19` && e.tanggal < `${endDate}-20` && e.pembayaran!='gopaylatter' && e.pembayaran!='debit' && e.pembayaran!='mega' && e.pembayaran!='kredit'){
+    if(e.tanggal > `${startDate}-19` && e.tanggal < `${endDate}-20` && e.pembayaran=='cimb' && e.pembayaran!='kredit'){
       return e
     }
   })
 
-  // filter gopaylatter & debit
+  // filter gopaylatter , debit, gopay
   let gopayLatter = read.filter(e=>{
-    if(e.tanggal > `${endDate}-00` && e.tanggal < endDate+'-'+'32' && (e.pembayaran=='gopaylatter' || e.pembayaran=='debit')){
+    if(e.tanggal > `${endDate}-00` && e.tanggal < endDate+'-'+'32' && (e.pembayaran=='gopaylatter' || e.pembayaran=='debit' || e.pembayaran=='gopay')){
       return e
     } 
   })
