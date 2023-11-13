@@ -231,6 +231,7 @@ function expiredToken(opr,cookie){
     let newListToken=token.filter((val)=>{
       return val.time > (new Date().getTime() - 24*60*60*1000)
     })
+    console.log("🚀 ~ file: mongodb.js:234 ~ newListToken ~ newListToken:", newListToken)
     user[0].token=newListToken
   };
   fs.writeFileSync('data/user.json', JSON.stringify(user));
