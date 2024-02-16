@@ -1,45 +1,90 @@
+<h5 style="text-align: center;"><%= msg %></h5>
 <form data-bulan method="post" action="/gantiBulan" class="seca">
   <input name="bulan" type="month" value=<%= month %>  >
   <!-- <button>submit</button> -->
 </form>
 
-<h3 data-total-belanja="all" class="totalbelanja"><%= "Rp. "+new Intl.NumberFormat().format(totalThisMonth) %></h3>
+<h3 data-total-belanja="all" class="totalbelanja"><%= "Rp. "+new Intl.NumberFormat().format(data.total.totalThisMonth) %></h3>
 <h5 data-total-belanja="yoga" class="totalbelanja">
-  <span>Yoga : <%= "Rp. "+new Intl.NumberFormat().format(totalYoga) %></span>
+  <span>Yoga : <%= "Rp. "+new Intl.NumberFormat().format(data.total.yoga) %></span>
 </h5>
 <h5 data-total-belanja="reysa" class="totalbelanja">
-  <span>Reysa : <%= "Rp. "+new Intl.NumberFormat().format(totalReysa) %></span>
+  <span>Reysa : <%= "Rp. "+new Intl.NumberFormat().format(data.total.reysa) %></span>
 </h5>
 
 <ul data-secb class="secb collapsible popout">
-  <% data.forEach(e => { %>
-    <li id=<%= e._id %> >
-      <div class="collapsible-header">
-        <ul class="collection">
-          <li class="collection-item avatar" >
-            <i class="circle <%= color(e.pembayaran)[0]  %>"><%= color(e.pembayaran)[1]  %> </i>
-            <span data-secb-value class="title"><%= e.pembayaran %></span>
-            <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
-            <p data-secb-value><%= e.deskripsi %></p>
-            <a class="secondary-content">
-              <p data-secb-value>
-                <%= e.tanggal %>
-              </p>
-              <span data-secb-value>
-                <%= e.user %> 
-              </span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div data-secb-button class="collapsible-body">
-        <a class="waves-effect waves-light btn edit">Edit</a>
-        <a class="waves-effect waves-light btn yellow">Duplicate</a>
-        <a class="waves-effect waves-light btn red">Delete</a>
-      </div>
-    </li>
+  <% let totalTagihan=0 %>
+  <% data.records.forEach(e => { %>
+    <% if (e.pembayaran != 'kredit' && e.pembayaran != 'debit' ) { %>
+      <% totalTagihan+=e.harga %>
+    <% } %>
+    <% if (e.pembayaran != 'kredit' && e.pembayaran != 'rutin') { %>
+      <li id=<%= e.id %> >
+        <div class="collapsible-header">
+          <ul class="collection">
+            <li class="collection-item avatar" >
+              <i class="circle <%= color(e.pembayaran)[0]  %>"><%= color(e.pembayaran)[1]  %> </i>
+              <span data-secb-value class="title"><%= e.pembayaran %></span>
+              <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
+              <p data-secb-value><%= e.deskripsi %></p>
+              <a class="secondary-content">
+                <p data-secb-value>
+                  <%= e.tanggal.split(' ')[0] %>
+                </p>
+                <span data-secb-value>
+                  <%= e.user %> 
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div data-secb-button class="collapsible-body">
+          <a class="waves-effect waves-light btn edit">Edit</a>
+          <a class="waves-effect waves-light btn yellow">Duplicate</a>
+          <a class="waves-effect waves-light btn red">Delete</a>
+        </div>
+      </li>
+    <% } %>
+  <% }) %>
+
+  <h4 class="rutin">Pembayaran Rutin</h4>
+
+  <% data.records.forEach(e => { %>
+    <% if (e.pembayaran == 'rutin') { %>
+      <li id=<%= e.id %> >
+        <div class="collapsible-header">
+          <ul class="collection">
+            <li class="collection-item avatar" >
+              <i class="circle <%= color(e.pembayaran)[0]  %>"><%= color(e.pembayaran)[1]  %> </i>
+              <span data-secb-value class="title"><%= e.pembayaran %></span>
+              <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
+              <p data-secb-value><%= e.deskripsi %></p>
+              <a class="secondary-content">
+                <p data-secb-value>
+                  <%= e.tanggal.split(' ')[0] %>
+                </p>
+                <span data-secb-value>
+                  <%= e.user %> 
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div data-secb-button class="collapsible-body">
+          <a class="waves-effect waves-light btn edit">Edit</a>
+          <a class="waves-effect waves-light btn yellow">Duplicate</a>
+          <a class="waves-effect waves-light btn red">Delete</a>
+        </div>
+      </li>
+    <% } %>
   <% }) %>
 </ul>
+
+<div class="tagihan">
+  <h5>Tagihan Diluar Debet & Cash</h5>
+  <p>Rp. <span><%= new Intl.NumberFormat().format(totalTagihan) %></span></p>
+</div>
+
 
 <!-- floating button -->
 <div data-floatbtn class="secc fixed-action-btn">
@@ -73,12 +118,9 @@
         <div class="input-field col s12 l6">
           <select data-formselect name="pembayaran">
             <!-- <option value="" disabled selected>payment method</option> -->
-            <option value="cimb">cimb</option>
-            <option value="mega">mega</option>
-            <option value="gopay">gopay</option>
-            <option value="gopaylatter">gopaylatter</option>
-            <option value="debit">debit</option>
-            <option value="kredit">kredit</option>
+            <% data.tipe.forEach(el => { %>
+              <option value=<%= el.pembayaran %>><%= el.pembayaran %></option>
+            <% }) %>
           </select>
         </div>
       </div>
@@ -86,8 +128,8 @@
       <div class="row">
         <div class="input-field col s12 l6">
           <select data-formselect name="user">
-            <option value="Yoga">Yoga</option>
-            <option value="Reysa">Reysa</option>
+            <option value="yoga">Yoga</option>
+            <option value="reysa">Reysa</option>
           </select>
           <label>User</label>
         </div>
@@ -111,3 +153,27 @@
     </form>
   </div>
 </div>
+
+
+
+<!-- <script type="module">
+  import PocketBase from '/pb_js/dist/pocketbase.es.mjs'
+  const pb = new PocketBase("https://pb.pemapi.com")
+
+  const authData = await pb.collection('users2').authWithOAuth2({ provider: 'google' });
+  console.log("🚀 ~ file: index2.ejs:120 ~ authData:", authData)
+  console.log(pb.authStore.model.email);
+  console.log(pb.authStore.token);
+  console.log(pb.authStore.model.id);
+
+  pb.collection('budget').subscribe('*', async function (e) {
+    console.log(e.action);
+    console.log(e.record);
+    const records = await pb.collection('budget').getFullList({
+    });
+    console.log("🚀 ~ file: index2.ejs:130 ~ records ~ records:", records)
+
+  });
+
+  // pb.authStore.clear()
+</script> -->

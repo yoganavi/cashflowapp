@@ -1,16 +1,15 @@
-const express = require('express')
-var expressLayouts = require('express-ejs-layouts');
-// const morgan = require('morgan');
-const { mongo, now } = require('mongoose');
-const app = express()
-// const Data = require('./mongoose.js')
-const { findTokenVal,expiredToken, addNewToken, today, datafilterthismonth, filtercolor, mongodb, totalPerBulan, randomSid} = require('./utils/mongodb.js');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const flash = require('connect-flash');
-const bodyParser = require('body-parser');
+import express from 'express';
+import expressLayouts from 'express-ejs-layouts';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import flash from 'connect-flash';
+import bodyParser from 'body-parser';
+import { pbAuth } from './utils/pocketbase/pb-auth.js';
+import { pb } from './utils/pocketbase/pb-auth.js';
+import { pbDatabase, generateDate, filtercolor } from './utils/pocketbase/pb-database.js';
 
 const PORT = process.env.PORT || 8100
+const app = express()
 
 // use ejs as view engine
 app.set('view engine', 'ejs');
@@ -30,174 +29,155 @@ app.use(
   })
 );
 app.use(flash());
+ // Parses json, multi-part (file), url-encoded
+app.use(bodyParser.json())
 
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   next();
+// });
 
-app.post('/loginval', (req,res) => {
-  console.log(req.body);
-  req.session.authenticated=false;
-
-  if(req.body.username=='yoga' && req.body.password==123){
-    let sid = randomSid();
-    let expiredTime=24*60*60*1000;
-    res.cookie('_sid', sid, {  maxAge: expiredTime, secure: true });
-    req.session.authenticated=true;
-    req.session.token=sid;
-    req.session.userAgent=req.headers['user-agent'];
-    addNewToken(sid)
+app.post('/oauth2-redirect', async (req,res) => {
+  console.log("🚀 ~ file: app.js:42 ~ app.post ~ oauthProcessingRoute:")
+  let record = req.body
+  console.log("🚀 ~ file: app.js:43 ~ app.post ~ record:", record)
+  // login & create cookies function
+  let login = await pbAuth('login',record,req,res)
+  if(!login){
+    req.flash('frOauth2',true)
+    return res.redirect('/login')
   } 
-  res.redirect('/')
+  return res.redirect('/')
 });
 
-app.get('/login',(req,res)=>{
-  expiredToken('login')
+app.get('/login' ,(req,res)=>{
   console.log('app.use./login');
-
+  let errMsg=req.flash('errMsg')[0]
+  console.log("🚀 ~ file: app.js:55 ~ app.get ~ errMsg:", errMsg)
+  let errMsgFrOauth2=req.flash('frOauth2')[0]
+  if(!errMsg) return res.redirect('/')
+  if(errMsgFrOauth2){
+    req.flash('errMsg', errMsg)
+  }
+  
   res.render('login', {
     layout: 'main-login',
-    jsfile: 'loginpage',
+    jsfile: 'login',
     cssfile: 'login',
     title: 'login',
+    errMsg,
   })
 })
 
-// const isAuthenticated = (req,res,next)=>{
-  // if(req.session.authenticated){
-  //   console.log('app.isAuthenticated.true');
-  //   next()
-  // } else{
-  //   console.log('app.isAuthenticated.false');
-  //   res.redirect('/login')
-  // }
-// }
+app.get('/logout', async (req,res)=>{
+  let token=req.cookies.pb_auth
+  let logout=await pbAuth('logout', token)
+  if(!logout) return res.send('logout FAILED')
+  res.clearCookie('pb_auth');
+  res.clearCookie('id_user1');
+  res.redirect('/login')
+})
 
+app.use('/', async (req, res, next) => {
+  let path = req.path
+  const cookieValue = req.cookies.pb_auth;
 
-app.use('/', (req, res, next) => {
-  const cookieValue = req.cookies._sid;
-  if(!cookieValue) return res.redirect('/login');
+  if(path=='/favicon.ico') return
+  if(path=='/gantiBulan') return next()
   
-  const sessionAuth=req.session.authenticated, cookieAuth=req.session.token === cookieValue, userAgentAuth=req.session.userAgent === req.headers['user-agent'];
-//! tambah req ip client yg disimpan d server agar ip client terakir terekam d server 
-  console.log('app.use/.cookieValue');
-  console.log(cookieValue);
-  console.log(req.session.token);
-  console.log(cookieAuth);
-  console.log(req.session.userAgent);
-  console.log(userAgentAuth);
+  console.log("🚀 ~ file: app.js:51 ~ app.use ~ path:", path)
+  
+  if(!cookieValue) {
+    req.flash('errMsg','login');
+    return res.redirect('/login');
+  }
+  // (async ()=>{
+    let cookieCheck = await pbAuth('cek', cookieValue, req, res)
+    if(!cookieCheck) return res.redirect('/logout')
+  // })()
 
-  findTokenVal(res,next,cookieValue)
-  // if( sessionAuth && cookieAuth && userAgentAuth){
-  //   console.log('app.use/.notyet login');
-  //   res.cookie('_sid', cookieValue, {  maxAge: 10*60*1000, secure: true });
+  // redirect to permitted paths
+  let userPath = req.flash('path')[0]
+  if(userPath != 'all'){
+    if(path!='/'){
+      return next()
+    }
+    return res.redirect(`${userPath}`)
+  }
 
-  //   return next()
-  // };
+  next()
 });
 
+app.post('/records', async (req,res)=>{
+  let collection = req.query.collection
+  let filter = req.query.filter
+  console.log("🚀 ~ file: app.js:114 ~ app.post ~ filter:", filter)
+  const records = await pb.collection('budget_data').getFullList({
+    filter: `${filter}`,
+  });
 
-
-// app.use(bodyParser.json());
-
-// app.post('/loginval',(req,res)=>{
-//   console.log(req.body);
-//   console.log(req.body.age);
-//   if(req.body.age==30){
-//     req.flash('validation',true)
-//     console.log('/');
-//     res.redirect('/');
-//   }else{
-//     req.flash('validation',true)
-//     console.log('/login');
-//     res.redirect('/login');
-//   }
-// });
-
-// app.use('/',(req, res, next) => {
-//   let validationn = req.flash('validation')
-//   console.log("validationn");
-//   console.log(Boolean(validationn[0]));
-//   if(validationn[0]){
-//     console.log('next');
-//     return next()
-//   }
-
-//   console.log('!validation');
-//   res.render('loginval', {
-//     layout: 'main-login2',
-//     jsfile: 'loginpage',
-//     title: 'login',
-//   })
-// });
-
-// app.get('/login',(req,res)=>{
-//   res.render('login', {
-//     layout: 'main-login',
-//     jsfile: 'loginpage',
-//     cssfile: 'login',
-//     title: 'login',
-//   })
-// });
-
-app.get('/xml',(req,res)=>{
-  console.log('/xml done');
-  res.json({
-    nama: "prayoga",
-    lokasi: "semarang"
-  })
+  res.json(records)
 })
 
-// sync func
-app.get('/sync',(req,res)=>{
-  req.flash('readData', 'cloud');
-  res.redirect('/')
-});
+app.get('/user2',async (req,res)=>{
+  let msg=req.flash('msg');
+  let reqGantiBulan = req.flash('date')[0]
+  console.log("🚀 ~ file: app.js:124 ~ app.get ~ reqGantiBulan:", reqGantiBulan)
+  let month = generateDate('yyyy-mm');
+  let fulldate = generateDate('yyyy-mm-dd');
+  if(reqGantiBulan){
+    month = `${reqGantiBulan.tahun}-${reqGantiBulan.bulan}`
+  }
+  let data = await pbDatabase('read',month,req,res,'april')
+  // console.log("🚀 ~ file: app.js:131 ~ app.get ~ data:", data)
 
-app.post('/calc', (req,res)=>{
-  let spp = 2;
-  res.render('calculator',{
-    layout: 'main-layout',
-    spp: spp,
+  res.render('index3', {
+    layout: 'main-layout2',
     title: 'budget planner app',
-    css: 'calculator.css',
-  })
+    month,
+    msg,
+    fulldate,
+    data,
+    color: filtercolor,
+    totalCimb: 10000,
+    totalGopayLatter: 10000,
+  });
 })
+
 
 app.get('/', async (req, res) => {
-  let bulan=req.flash('bulan'); //! output berupa array 
-  let tahun=req.flash('tahun'); //! output berupa array
-  let readDBS = req.flash('readData')
-  console.log(`app.get/.bulan.${bulan}`);
-  console.log(`app.get/.tahun.${tahun}`);
-  console.log('app.get/.bulan[0].'+Boolean(bulan[0]));
-  
-  let data = await datafilterthismonth(bulan[0],tahun[0],readDBS[0]) 
+  let msg=req.flash('msg');
+  let reqGantiBulan = req.flash('date')[0]
+  console.log("🚀 ~ file: app.js:112 ~ app.get ~ reqGantiBulan:", reqGantiBulan)
+  let month = generateDate('yyyy-mm');
+  let fulldate = generateDate('yyyy-mm-dd');
+  if(reqGantiBulan){
+    month = `${reqGantiBulan.tahun}-${reqGantiBulan.bulan}`
+  }
+  let data = await pbDatabase('read',month,req,res,'')
+  // console.log("🚀 ~ file: app.js:118 ~ app.get ~ data:", data)
+  console.log("🚀 ~ file: app.js:119 ~ app.get ~ READ DATA DONE!")
+  // return 
+  // let data = await datafilterthismonth(bulan[0],tahun[0],readDBS[0]) 
   res.render('index2', {
     layout: 'main-layout2',
     title: 'budget planner app',
-    month: today(bulan.length==0? 'startMonth' : bulan.join(),tahun),
-    fulldate: today('fulldate'),
+    month,
+    msg,
+    fulldate,
     data,
-    kredit: await datafilterthismonth(null,null,null,'kredit'),
     color: filtercolor,
-    totalThisMonth: totalPerBulan(data,'all'),
-    totalYoga: totalPerBulan(data,'yoga'),
-    totalReysa: totalPerBulan(data,'reysa'),
-    totalCimb: totalPerBulan(data,'cimb'),
-    totalGopayLatter: totalPerBulan(data,'gopaylatter'),
+    totalCimb: 10000,
+    totalGopayLatter: 10000,
   });
 });
 
 // add data to db
 app.post('/send', async (req, res) => {
-  console.log('app.js>post/send '+req.body);
   console.log(req.body);
-  req.flash('readData', 'cloud');
-
-  await mongodb('create',req.body)
+  let add=await pbDatabase('create',req.body,req)
+  if(add) req.flash('msg',`add data succces ${req.body.pembayaran}`)
   res.redirect('/');
 });
 
@@ -205,42 +185,31 @@ app.post('/send', async (req, res) => {
 app.post('/gantiBulan', (req, res) => {
   let bulan = req.body.bulan.split('-')[1];
   let tahun = req.body.bulan.split('-')[0];
-  req.flash('bulan', bulan);
-  req.flash('tahun', tahun);
+  req.flash('date', {bulan,tahun});
   res.redirect('/')
 });
 
 // delete one data
-app.get('/delete/:id', async (req, res) => {
-  console.log('app.get./delete');
-  await mongodb('delete', req.params.id);
-  req.flash('readData', 'cloud');
+app.get('/delete', async (req, res) => {
+  let record = await pbDatabase('delete', {id : req.query.id})
+
   res.redirect('/'); 
 });
 
 // edit one data
-app.post('/edit/:id/:bulan', async (req,res)=>{
-  console.log('app.js>edit data '+ req.params.bulan);
-  console.log(req.params.id);
-  req.flash('bulan', req.params.bulan.split('-')[1]);
-  req.flash('tahun', req.params.bulan.split('-')[0]);
-  req.flash('readData', 'cloud');
+app.post('/edit', async (req,res)=>{
+  req.flash('bulan', req.query.bulan.split('-')[1]);
+  req.flash('tahun', req.query.bulan.split('-')[0]);
+  let datas = req.body
+  datas.id=req.query.id
   
-  await mongodb('edit',req.params.id,req.body);
+  let record = await pbDatabase('update', datas)
   res.redirect('/')
 });
 
 // logout
-app.get('/logout', (req,res)=>{
-  let cookie=req.cookies._sid
-  expiredToken('logout',cookie)
-  res.clearCookie('_sid');
-  req.session.destroy();
-  res.redirect('/login')
-})
-
 app.use('/', (req, res) => {
-  console.log(`app.use/`);
+  console.log(`app.use/ PAGE NOT FOUND!!!!`);
   res.status(404)
   .send('<h1>Page not found</h1>');
 })

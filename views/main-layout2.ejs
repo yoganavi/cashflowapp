@@ -17,6 +17,8 @@
 
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/ce27987ac1.js" crossorigin="anonymous"></script>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
   </head>
   <body>
     <%- include ('loadingPage.ejs') %> 
@@ -24,15 +26,14 @@
     <!-- navbar -->
     <nav>
       <div class="nav-wrapper container">
-        <a href="#!" class="brand-logo"><img src="http://drive.google.com/uc?export=view&id=1oAOz-yS44yShNtVj8XZSnNLmduBoJ2E6" alt=""></a>
+        <a href="#!" class="brand-logo"><img src="" alt=""></a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <% const menu = ["summary","pemasukan",'Logout','Sync','Calculator'] %> 
+        <% const menu = ["summary","pemasukan",'Logout','Calculator'] %> 
         <ul class="right hide-on-med-and-down">
           <li><a onclick="modalInstance2.open()"><%= menu[0] %> </a></li>
           <li><a onclick="modalInstance1.open()"><%= menu[1] %></a></li>
           <li><a href="/logout"><%= menu[2] %></a></li>
-          <li><a href="/sync" onclick="loading()"><%= menu[3] %></a></li>
-          <li><a onclick="postDatas()"><%= menu[4] %></a></li>
+          <li><a onclick="postDatas()"><%= menu[3] %></a></li>
         </ul>
       </div>
     </nav>
@@ -41,8 +42,7 @@
       <li><a onclick="modalInstance2.open()"><%= menu[0] %> </a></li>
       <li><a onclick="modalInstance1.open()"><%= menu[1] %></a></li>
       <li><a href="/logout"><%= menu[2] %></a></li>
-      <li><a href="/sync"><%= menu[3] %></a></li>
-      <li><a onclick="postDatas()"><%= menu[4] %></a></li>
+      <li><a onclick="postDatas()"><%= menu[3] %></a></li>
     </ul>
 
     <!-- modal for navbar menu summary and pemasukan -->
@@ -58,6 +58,5 @@
     <script type="text/javascript" src="js/materialize-init.js?114"></script>
     <!-- user js -->
     <script type="text/javascript" src="js/firebase4.js?114"></script>
-
   </body>
 </html>

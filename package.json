@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "budget planner web app",
   "main": "app.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "app": "nodemon app.js --ignore *.json",
+    "start": "nodemon app.js -e ejs,js,html,css"
   },
   "author": "prayoga nugraha",
   "license": "ISC",
@@ -13,6 +15,7 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.0.2",
+    "eventsource": "^2.0.2",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
@@ -21,6 +24,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "pocketbase": "^0.19.0"
   }
 }

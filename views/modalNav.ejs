@@ -3,41 +3,45 @@
   <div class="modal-content">
     <!-- total pemasukan -->
     <% let totalKredit=0 %> 
-    <% kredit.forEach(e => { %>
-      <% totalKredit+=Number(e.harga) %> 
-      <% }) %>
+    <% data.records.forEach(e => { %>
+      <% if (e.tipe == 'kredit') { %>
+        <% totalKredit+=Number(e.harga)  %> 
+      <% } %>
+    <% }) %>
     <!-- / total pemasukan -->
     <h4 class="center-align judul">Total Pemasukan</h3>
     <h5 data-total-belanja="all" class="center-align judul2"><%= "Rp. "+new Intl.NumberFormat().format(totalKredit) %></h5>
 
     <ul data-secb class="secb collapsible popout">
-      <% kredit.forEach(e => { %>
-        <li id=<%= e._id %> >
-          <div class="collapsible-header">
-            <ul class="collection">
-              <li class="collection-item avatar" >
-                <i class="circle cyan">K </i>
-                <span data-secb-value class="title"><%= e.pembayaran %></span>
-                <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
-                <p data-secb-value><%= e.deskripsi %></p>
-                <p data-secb-value>
-                  <%= e.tanggal %>
-                </p>
-                <span data-secb-value>
-                  <%= e.user %> 
-                </span>
-                <a class="secondary-content">
-
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div data-secb-button class="collapsible-body">
-            <a class="waves-effect waves-light btn">Edit</a>
-            <a class="waves-effect waves-light btn yellow">Duplicate</a>
-            <a class="waves-effect waves-light btn red">Delete</a>
-          </div>
-        </li>
+      <% data.records.forEach(e => { %>
+        <% if (e.tipe == 'kredit') { %>
+          <li data-pembayaran=<%= e.tipe %> id=<%= e.id %> >
+            <div class="collapsible-header">
+              <ul class="collection">
+                <li class="collection-item avatar" >
+                  <i class="circle <%= color(e.pembayaran,'april')[0]  %>"><%= color(e.pembayaran,'april')[1]  %> </i>
+                  <span data-secb-value class="title"><%= e.pembayaran %></span>
+                  <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
+                  <p data-secb-value><%= e.deskripsi %></p>
+                  <p data-secb-value>
+                    <%= e.tanggal.split(' ')[0] %>
+                  </p>
+                  <span data-secb-value>
+                    <%= e.user %> 
+                  </span>
+                  <a class="secondary-content">
+  
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div data-secb-button class="collapsible-body">
+              <a class="waves-effect waves-light btn">Edit</a>
+              <a class="waves-effect waves-light btn yellow">Duplicate</a>
+              <a class="waves-effect waves-light btn red">Delete</a>
+            </div>
+          </li>
+        <% } %>
       <% }) %>
     </ul>
   </div>
@@ -55,7 +59,7 @@
         <h5 class="">Pemasukan</h5>
         <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalKredit) %></h6>
       </li>
-      <% let reysa = 2000000-totalReysa %> 
+      <% let reysa = 2000000-(data.total.reysa) %> 
       <li class="collection-item">
         <h5 class="">Bulanan Reysa</h5>
         <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(reysa) %></h6>
@@ -63,7 +67,7 @@
       <li class="collection-item">
         <% if(reysa<0) reysa=0 %>
         <h5 class="">Sisa</h5>
-        <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalKredit-totalThisMonth-reysa) %></h6>
+        <h6 class=""><%= "Rp. "+new Intl.NumberFormat().format(totalKredit-(data.total.totalThisMonth)-reysa) %></h6>
       </li>
     </ul>
 

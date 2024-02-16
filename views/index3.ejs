@@ -1,0 +1,167 @@
+<h5 style="text-align: center;"><%= msg %></h5>
+<form data-bulan method="post" action="/gantiBulan" class="seca">
+  <input name="bulan" type="month" value=<%= month %>  >
+  <!-- <button>submit</button> -->
+</form>
+
+<!-- count total tagihan exclude data tipe kredit -->
+<% let totalTagihan=0 %>
+<% data.records.forEach(e => { %>
+  <% if (e.tipe != 'kredit' ) { %>
+    <% totalTagihan+=e.harga %>
+  <% } %>
+<% }) %>
+<h3 data-total-belanja="all" class="totalbelanja"><%= "Rp. "+new Intl.NumberFormat().format(totalTagihan) %></h3>
+<!-- / count total tagihan exclude data tipe kredit -->
+
+<ul data-secb class="secb collapsible popout">
+  <% data.records.forEach(e => { %>
+      <% if (e.tipe != 'kredit' && e.pembayaran != 'rutin') { %>
+      <li data-pembayaran=<%= e.tipe %> id=<%= e.id %> >
+        <div class="collapsible-header">
+          <ul class="collection">
+            <li class="collection-item avatar" >
+              <i class="circle <%= color(e.pembayaran,'april')[0]  %>"><%= color(e.pembayaran,'april')[1]  %> </i>
+              <span data-secb-value class="title"><%= e.pembayaran %></span>
+              <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
+              <p data-secb-value><%= e.deskripsi %></p>
+              <a class="secondary-content">
+                <p data-secb-value>
+                  <%= e.tanggal.split(' ')[0] %>
+                </p>
+                <span data-secb-value>
+                  <%= e.user %> 
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div data-secb-button class="collapsible-body">
+          <a class="waves-effect waves-light btn edit">Edit</a>
+          <a class="waves-effect waves-light btn yellow">Duplicate</a>
+          <a class="waves-effect waves-light btn red">Delete</a>
+        </div>
+      </li>
+    <% } %>
+  <% }) %>
+
+  <!-- rutin section -->
+  <h4 class="rutin">Pembayaran Rutin</h4>
+
+  <% data.records.forEach(e => { %>
+    <% if (e.pembayaran == 'rutin' && e.tipe!='kredit') { %>
+      <li data-pembayaran=<%= e.tipe %> id=<%= e.id %> >
+        <div class="collapsible-header">
+          <ul class="collection">
+            <li class="collection-item avatar" >
+              <i class="circle <%= color(e.pembayaran,"april")[0]  %>"><%= color(e.pembayaran,"april")[1]  %> </i>
+              <span data-secb-value class="title"><%= e.pembayaran %></span>
+              <p data-secb-value><%= "Rp. "+new Intl.NumberFormat().format(e.harga) %></p>
+              <p data-secb-value><%= e.deskripsi %></p>
+              <a class="secondary-content">
+                <p data-secb-value>
+                  <%= e.tanggal.split(' ')[0] %>
+                </p>
+                <span data-secb-value>
+                  <%= e.user %> 
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div data-secb-button class="collapsible-body">
+          <a class="waves-effect waves-light btn edit">Edit</a>
+          <a class="waves-effect waves-light btn yellow">Duplicate</a>
+          <a class="waves-effect waves-light btn red">Delete</a>
+        </div>
+      </li>
+    <% } %>
+  <% }) %>
+</ul>
+<!-- / rutin section -->
+
+
+<!-- floating button -->
+<div data-floatbtn class="secc fixed-action-btn">
+  <a class="btn-floating btn-large red">
+    <i class="large material-icons">mode_edit</i>
+  </a>
+  <ul>
+
+  </ul>
+</div>
+
+<!-- Modal Add & edit data -->
+<div data-modal id="modal1" class="secd modal">
+  <div class="modal-content">
+    <form class="col s12" method="post" action="/send">
+      <!-- date picker -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <p>Tanggal Transaksi</p>
+          <input name="tanggal" type="text" id="tanggaltansaksi" class="datepicker" value=<%= fulldate %>>
+          <!-- <input id="last_name" type="text" class="validate"> -->
+          <!-- <label for="tanggaltansaksi">Tanggal Transaksi</label> -->
+        </div>
+      </div>
+      <!-- select tipe -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <select data-formselect name="tipe">
+              <option value='debet'>Debet</option>
+              <option value='kredit'>Kredit</option>
+              <option value='cc'>Credit Card</option>
+          </select>
+        </div>
+      </div>
+      <!-- select pembayaran -->
+      <div class="row">
+        <div data-select-pembayaran class="debet input-field col s12 l6 d-none">
+          <select data-formselect data-pembayaran name="pembayaran">
+            <!-- <option value="" disabled selected>Select Payment</option> -->
+            <% data.tipe.forEach(el => { %>
+              <% if (el.nama=='april' && el.pembayaran.split('-')[0]!="cc") { %>
+                  <option value= <%= el.pembayaran %> ><%= el.pembayaran %></option>
+              <% } %>
+            <% }) %>
+          </select>
+        </div>
+        <div data-select-pembayaran class="credit-card input-field col s12 l6 d-none">
+          <select data-formselect data-pembayaran name="pembayaran">
+            <!-- <option value="" disabled selected>Select Payment</option> -->
+            <% data.tipe.forEach(el => { %>
+              <% if (el.nama=='april' && el.pembayaran.split('-')[0]=="cc") { %>
+                  <option value= <%= el.pembayaran %> ><%= el.pembayaran %></option>
+              <% } %>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+      <!-- select user -->
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <select data-formselect name="user">
+            <option value="april">April</option>
+          </select>
+          <label>User</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <label for="deskripsi">Deskripsi</label>
+          <input name="deskripsi" id="deskripsi" type="text" class="validate">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 l6">
+          <input name="harga" id="harga" type="number" class="validate" min=1000 required>
+          <label for="harga">Harga</label>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light" type="submit" onclick="loading('addEdit')">Submit
+        <i class="material-icons right">send</i>
+      </button>
+      <a class="waves-effect modal-close red btn">Cancel</a>
+    </form>
+  </div>
+</div>

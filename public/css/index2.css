@@ -104,3 +104,19 @@ form.seca input{
   margin: auto;
 
 }
+
+h4.rutin{
+  margin-left: 30px;
+}
+
+.tagihan{
+  margin: 60px 0 50px 30px;
+  width: fit-content;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid black;
+}
+
+.d-none{
+  display: none;
+}
