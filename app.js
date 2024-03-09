@@ -142,6 +142,7 @@ app.get('/user2',async (req,res)=>{
     color: filtercolor,
     totalCimb: 10000,
     totalGopayLatter: 10000,
+    user: 'april',
   });
 })
 
@@ -160,7 +161,7 @@ app.get('/', async (req, res) => {
   console.log("🚀 ~ file: app.js:119 ~ app.get ~ READ DATA DONE!")
   // return 
   // let data = await datafilterthismonth(bulan[0],tahun[0],readDBS[0]) 
-  res.render('index2', {
+  res.render('index3', {
     layout: 'main-layout2',
     title: 'budget planner app',
     month,
@@ -170,6 +171,7 @@ app.get('/', async (req, res) => {
     color: filtercolor,
     totalCimb: 10000,
     totalGopayLatter: 10000,
+    user: 'yoga',
   });
 });
 

@@ -16,7 +16,7 @@
 
 <ul data-secb class="secb collapsible popout">
   <% data.records.forEach(e => { %>
-      <% if (e.tipe != 'kredit' && e.pembayaran != 'rutin') { %>
+      <% if (e.tipe != 'kredit' && e.tipe != 'rutin') { %>
       <li data-pembayaran=<%= e.tipe %> id=<%= e.id %> >
         <div class="collapsible-header">
           <ul class="collection">
@@ -49,7 +49,7 @@
   <h4 class="rutin">Pembayaran Rutin</h4>
 
   <% data.records.forEach(e => { %>
-    <% if (e.pembayaran == 'rutin' && e.tipe!='kredit') { %>
+    <% if (e.tipe == 'rutin') { %>
       <li data-pembayaran=<%= e.tipe %> id=<%= e.id %> >
         <div class="collapsible-header">
           <ul class="collection">
@@ -111,28 +111,17 @@
               <option value='debet'>Debet</option>
               <option value='kredit'>Kredit</option>
               <option value='cc'>Credit Card</option>
+              <option value='rutin'>Rutin</option>
           </select>
         </div>
       </div>
       <!-- select pembayaran -->
       <div class="row">
-        <div data-select-pembayaran class="debet input-field col s12 l6 d-none">
+        <div data-select-pembayaran class="rutin input-field col s12 l6">
           <select data-formselect data-pembayaran name="pembayaran">
             <!-- <option value="" disabled selected>Select Payment</option> -->
             <% data.tipe.forEach(el => { %>
-              <% if (el.nama=='april' && el.pembayaran.split('-')[0]!="cc") { %>
-                  <option value= <%= el.pembayaran %> ><%= el.pembayaran %></option>
-              <% } %>
-            <% }) %>
-          </select>
-        </div>
-        <div data-select-pembayaran class="credit-card input-field col s12 l6 d-none">
-          <select data-formselect data-pembayaran name="pembayaran">
-            <!-- <option value="" disabled selected>Select Payment</option> -->
-            <% data.tipe.forEach(el => { %>
-              <% if (el.nama=='april' && el.pembayaran.split('-')[0]=="cc") { %>
-                  <option value= <%= el.pembayaran %> ><%= el.pembayaran %></option>
-              <% } %>
+                <option value= <%= el.pembayaran %> ><%= el.pembayaran %></option>
             <% }) %>
           </select>
         </div>
@@ -141,7 +130,13 @@
       <div class="row">
         <div class="input-field col s12 l6">
           <select data-formselect name="user">
-            <option value="april">April</option>
+            <% if (user=='april') { %>
+              <option value="april">April</option>
+            <% } else { %>
+              <option value="yoga">Yoga</option>
+              <option value="reysa">Reysa</option>
+            <% } %>
+               
           </select>
           <label>User</label>
         </div>

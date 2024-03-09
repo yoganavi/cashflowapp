@@ -96,23 +96,23 @@ function postDatas(){
 console.log($("select[data-formselect][name=tipe]")[0]);
 
 // form select tipe pembayaran  
-selectTipePembayaran.onchange=(el)=>{
-	console.log(selectTipePembayaran.value);
-	divPembayaran.forEach(el => {
-		el.classList.add('d-none')
-	});
-	selectPembayaran.forEach(el => {
-		el.removeAttribute('disabled')
-	});
+// selectTipePembayaran.onchange=(el)=>{
+// 	console.log(selectTipePembayaran.value);
+// 	divPembayaran.forEach(el => {
+// 		el.classList.add('d-none')
+// 	});
+// 	selectPembayaran.forEach(el => {
+// 		el.removeAttribute('disabled')
+// 	});
 
-	if(selectTipePembayaran.value=='debet' || selectTipePembayaran.value=='kredit' ){
-		divPembayaran[0].classList.remove('d-none')
-		selectPembayaran[1].setAttribute('disabled','')
-	}
-	if(selectTipePembayaran.value=='cc'){
-		divPembayaran[1].classList.remove('d-none')
-		selectPembayaran[0].setAttribute('disabled','')
-	}
-}
+// 	if(selectTipePembayaran.value=='debet' || selectTipePembayaran.value=='kredit' ){
+// 		divPembayaran[0].classList.remove('d-none')
+// 		selectPembayaran[1].setAttribute('disabled','')
+// 	}
+// 	if(selectTipePembayaran.value=='cc'){
+// 		divPembayaran[1].classList.remove('d-none')
+// 		selectPembayaran[0].setAttribute('disabled','')
+// 	}
+// }
 
 console.log(selectPembayaran);

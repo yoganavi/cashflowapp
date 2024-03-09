@@ -23,7 +23,7 @@ export function filtercolor(data,user){
     return ['cyan', ...data[0]]
   }
   if(data=='cimb') return ['red',...data[0]];
-  if(data=='debit') return ['blue',...data[0]]
+  if(data=='mandiri') return ['blue',...data[0]]
 	if(data=='gopay') return ['green',...data[0]]
   if(data=="gopaylatter") return ['lime','GL']
   if(data=="kredit") return ['cyan','K']
@@ -37,7 +37,7 @@ export async function pbDatabase(act,datas,req,res,user){
     });
     // console.log("🚀 ~ file: pb-database.js:31 ~ tipe ~ tipe:", tipe)
 
-    // get email from id_user1 cookies
+    // get user email from id_user1 cookies
     const getEmail = await pb.collection('users2').getFullList({
       filter: `id='${req.cookies.id_user1}'`,
     });
@@ -74,6 +74,7 @@ export async function pbDatabase(act,datas,req,res,user){
         join.push(filter)
       }
       if(i == pembayaran.length-1) {
+        join.push(`|| tipe='rutin'`) 
         join.push(`)`) 
         join.push(`&& user_id='${getEmail[0].email}'`) 
         return
